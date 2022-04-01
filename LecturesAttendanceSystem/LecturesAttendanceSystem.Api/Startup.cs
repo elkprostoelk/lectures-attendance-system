@@ -40,9 +40,12 @@ namespace LecturesAttendanceSystem.Api
             });
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
-
+            services.AddHttpContextAccessor();
+            
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
 
+            services.AddScoped<IClaimDecorator, ClaimDecorator>();
             services.AddScoped<IUserService, UserService>();
             
             services.AddRsaAuthentication(Configuration);

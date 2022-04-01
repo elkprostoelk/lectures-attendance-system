@@ -10,6 +10,7 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="7.0.0-preview.2.22153.2" />
+      <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     </ItemGroup>
 
 </Project>
