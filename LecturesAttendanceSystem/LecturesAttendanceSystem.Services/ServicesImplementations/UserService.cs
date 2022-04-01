@@ -62,6 +62,45 @@ namespace LecturesAttendanceSystem.Services.ServicesImplementations
             return result;
         }
 
+        public async Task<ServiceResult> Login(LoginDTO loginDto)
+        {
+            var user = await _userRepository.GetUser(loginDto.UserName);
+            var hashedPassword = HashPassword(user, loginDto.Password);
+            var result = new ServiceResult();
+            if (user is null)
+            {
+                result.IsSuccessful = false;
+                result.Errors.Add("UserNotExists", $"User {loginDto.UserName} doesn't exist!");
+            }
+            else
+            {
+                if (user.PasswordHash != hashedPassword)
+                {
+                    result.IsSuccessful = false;
+                    result.Errors.Add("WrongPassword", "Wrong password!");
+                }
+                else
+                {
+                    if (user.RoleId != loginDto.RoleId)
+                    {
+                        result.IsSuccessful = false;
+                        result.Errors.Add("NotInRole", $"User {loginDto.UserName} does not have this role!");
+                    }
+                    else
+                    {
+                        result.IsSuccessful = true;
+                        result.ResultObject = new UserDTO
+                        {
+                            Id = user.Id,
+                            Name = user.Name,
+                            Role = user.Role.Name
+                        };
+                    }
+                }
+            }
+            return result;
+        }
+
         private string HashPassword(User user, string password)
         {
             const int hashSize = 256 / 8;

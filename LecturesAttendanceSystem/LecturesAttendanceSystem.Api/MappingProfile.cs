@@ -9,6 +9,7 @@ namespace LecturesAttendanceSystem.Api
         public MappingProfile()
         {
             CreateMap<NewUserModel, NewUserDTO>();
+            CreateMap<LoginModel, LoginDTO>();
         }
     }
 }

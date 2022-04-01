@@ -15,10 +15,8 @@ namespace LecturesAttendanceSystem.Data.Repositories
             _context = context;
         }
 
-        public async Task<bool> UserExists(string name)
-        {
-            return await _context.Users.AnyAsync(u => u.Name == name);
-        }
+        public async Task<bool> UserExists(string name) => 
+            await _context.Users.AnyAsync(u => u.Name == name);
 
         public async Task AddUser(User user)
         {
@@ -27,5 +25,10 @@ namespace LecturesAttendanceSystem.Data.Repositories
             await _context.SaveChangesAsync();
             await transaction.CommitAsync();
         }
+
+        public async Task<User> GetUser(string userName) => 
+            await _context.Users
+                .Include(u => u.Role)
+                .SingleOrDefaultAsync(u => u.Name == userName);
     }
 }
