@@ -39,5 +39,22 @@ namespace LecturesAttendanceSystem.Api.Controllers
             }
             return BadRequest();
         }
+
+        [Authorize(Roles = "administrator")]
+        [HttpPut("{userId:long}")]
+        public async Task<IActionResult> EditUser(long userId, EditUserModel editUserModel)
+        {
+            var editUserDto = _mapper.Map<EditUserDTO>(editUserModel);
+            var result = await _userService.EditUser(userId, editUserDto);
+            if (result.IsSuccessful)
+            {
+                return Ok();
+            }
+            foreach (var (key, value) in result.Errors)
+            {
+                ModelState.AddModelError(key, value);
+            }
+            return BadRequest();
+        }
     }
 }

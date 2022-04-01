@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using LecturesAttendanceSystem.Data.Entities;
 using LecturesAttendanceSystem.Data.Interfaces;
@@ -30,5 +31,17 @@ namespace LecturesAttendanceSystem.Data.Repositories
             await _context.Users
                 .Include(u => u.Role)
                 .SingleOrDefaultAsync(u => u.Name == userName);
+
+        public async Task<User> GetUser(long userId) =>
+            await _context.Users
+                .SingleOrDefaultAsync(u => u.Id == userId);
+
+        public async Task UpdateUser(User user)
+        {
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
+        }
     }
 }

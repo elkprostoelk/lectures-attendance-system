@@ -8,5 +8,7 @@ namespace LecturesAttendanceSystem.Data.Interfaces
         Task<bool> UserExists(string name);
         Task AddUser(User user);
         Task<User> GetUser(string userName);
+        Task<User> GetUser(long userId);
+        Task UpdateUser(User user);
     }
 }

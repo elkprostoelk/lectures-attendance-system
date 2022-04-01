@@ -1,6 +1,7 @@
 using System;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using AutoMapper;
 using LecturesAttendanceSystem.Data.Entities;
 using LecturesAttendanceSystem.Data.Interfaces;
 using LecturesAttendanceSystem.Services.Dtos;
@@ -13,13 +14,16 @@ namespace LecturesAttendanceSystem.Services.ServicesImplementations
     {
         private readonly IUserRepository _userRepository;
         private readonly IRoleRepository _roleRepository;
+        private readonly IMapper _mapper;
 
         public UserService(
             IUserRepository userRepository,
-            IRoleRepository roleRepository)
+            IRoleRepository roleRepository,
+            IMapper mapper)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
+            _mapper = mapper;
         }
 
         public async Task<ServiceResult> RegisterUser(NewUserDTO newUserDto)
@@ -97,6 +101,23 @@ namespace LecturesAttendanceSystem.Services.ServicesImplementations
                         };
                     }
                 }
+            }
+            return result;
+        }
+
+        public async Task<ServiceResult> EditUser(long userId, EditUserDTO editUserDto)
+        {
+            var result = new ServiceResult();
+            var user = await _userRepository.GetUser(userId);
+            if (user is null)
+            {
+                result.IsSuccessful = false;
+                result.Errors.Add("UserNotExists", $"User does not exist!");
+            }
+            else
+            {
+                user = _mapper.Map<User>(editUserDto);
+                await _userRepository.UpdateUser(user);
             }
             return result;
         }
