@@ -8,5 +8,6 @@ namespace LecturesAttendanceSystem.Services.Interfaces
         Task<ServiceResult> RegisterUser(NewUserDTO newUserDto);
         Task<ServiceResult> Login(LoginDTO loginDto);
         Task<ServiceResult> EditUser(long userId, EditUserDTO editUserDto);
+        Task<ServiceResult> DeleteUser(long userId);
     }
 }

@@ -10,5 +10,6 @@ namespace LecturesAttendanceSystem.Data.Interfaces
         Task<User> GetUser(string userName);
         Task<User> GetUser(long userId);
         Task UpdateUser(User user);
+        Task RemoveUser(User user);
     }
 }

@@ -43,5 +43,13 @@ namespace LecturesAttendanceSystem.Data.Repositories
             await _context.SaveChangesAsync();
             await transaction.CommitAsync();
         }
+
+        public async Task RemoveUser(User user)
+        {
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
+        }
     }
 }

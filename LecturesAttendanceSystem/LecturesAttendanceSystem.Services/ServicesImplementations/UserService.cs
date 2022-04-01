@@ -122,6 +122,22 @@ namespace LecturesAttendanceSystem.Services.ServicesImplementations
             return result;
         }
 
+        public async Task<ServiceResult> DeleteUser(long userId)
+        {
+            var result = new ServiceResult();
+            var user = await _userRepository.GetUser(userId);
+            if (user is null)
+            {
+                result.IsSuccessful = false;
+                result.Errors.Add("UserNotExists", $"User does not exist!");
+            }
+            else
+            {
+                await _userRepository.RemoveUser(user);
+            }
+            return result;
+        }
+
         private string HashPassword(User user, string password)
         {
             const int hashSize = 256 / 8;
