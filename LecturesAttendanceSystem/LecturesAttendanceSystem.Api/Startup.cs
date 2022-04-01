@@ -2,7 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using LecturesAttendanceSystem.Data;
+using LecturesAttendanceSystem.Data.Interfaces;
+using LecturesAttendanceSystem.Data.Repositories;
+using LecturesAttendanceSystem.Services.Interfaces;
+using LecturesAttendanceSystem.Services.ServicesImplementations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,6 +33,18 @@ namespace LecturesAttendanceSystem.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRouting(options => options.LowercaseUrls = true);
+            
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
+            services.AddScoped<IUserRepository, UserRepository>();
+
+            services.AddScoped<IUserService, UserService>();
+            
             services.AddRsaAuthentication(Configuration);
             services.AddDbContext<AttendanceSystemDbContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
