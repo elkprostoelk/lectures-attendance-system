@@ -9,7 +9,9 @@ using LecturesAttendanceSystem.Data.Repositories;
 using LecturesAttendanceSystem.Services.Interfaces;
 using LecturesAttendanceSystem.Services.ServicesImplementations;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +20,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Serilog;
 
 namespace LecturesAttendanceSystem.Api
 {
@@ -97,6 +100,15 @@ namespace LecturesAttendanceSystem.Api
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", 
                         "LecturesAttendanceSystem.Api v1"));
             }
+            
+            app.UseExceptionHandler(a => a.Run(async context =>
+            {
+                var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
+                var exception = exceptionHandlerPathFeature.Error;
+                Log.Fatal(exception, "An exception occured while processing the request");
+                context.Response.StatusCode = 500;
+                await context.Response.WriteAsJsonAsync(new {error = exception.Message});
+            }));
 
             app.UseHttpsRedirection();
 
