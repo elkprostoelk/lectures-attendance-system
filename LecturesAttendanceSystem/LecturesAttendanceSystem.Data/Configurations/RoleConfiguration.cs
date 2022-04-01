@@ -16,6 +16,12 @@ namespace LecturesAttendanceSystem.Data.Configurations
 
             builder.HasIndex(r => r.Name)
                 .IsUnique();
+
+            builder.HasData(
+                new Role {Id = 1, Name = "administrator"},
+                new Role {Id = 2, Name = "student"},
+                new Role {Id = 3, Name = "teacher"}
+            );
         }
     }
 }
