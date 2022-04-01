@@ -7,6 +7,7 @@ using AutoMapper;
 using LecturesAttendanceSystem.Api.Models;
 using LecturesAttendanceSystem.Services.Dtos;
 using LecturesAttendanceSystem.Services.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -15,6 +16,7 @@ namespace LecturesAttendanceSystem.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Produces("application/json")]
     public class AuthController : ControllerBase
     {
         private readonly IConfiguration _configuration;
@@ -31,7 +33,18 @@ namespace LecturesAttendanceSystem.Api.Controllers
             _userService = userService;
         }
 
+        /// <summary>
+        /// Log in.
+        /// </summary>
+        /// <param name="loginModel">Login model</param>
+        /// <returns>JWT token</returns>
+        /// <response code="200">User is logged in successfully</response>
+        /// <response code="400">If the data is invalid or user/role does not exist</response>
+        /// <response code="500">Any exception thrown</response>
         [HttpPost("login")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Login(LoginModel loginModel)
         {
             var loginDto = _mapper.Map<LoginDTO>(loginModel);
