@@ -53,6 +53,15 @@ namespace LecturesAttendanceSystem.Api.Controllers
             return BadRequest(ModelState);
         }
 
+        /// <summary>
+        /// Edits a lesson.
+        /// </summary>
+        /// <param name="editLessonModel">User editing model</param>
+        /// <param name="lessonId">Lesson ID</param>
+        /// <returns>Empty result</returns>
+        /// <response code="200">Lesson is edited successfully</response>
+        /// <response code="400">If the data is invalid or lesson does not exist</response>
+        /// <response code="500">Any exception thrown</response>
         [Authorize(Roles = "administrator, teacher")]
         [HttpPut("{lessonId:long}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -61,7 +70,7 @@ namespace LecturesAttendanceSystem.Api.Controllers
         public async Task<IActionResult> EditLesson(long lessonId, EditLessonModel editLessonModel)
         {
             var editLessonDto = _mapper.Map<EditLessonDTO>(editLessonModel);
-            ServiceResult result = await _lessonService.EditLesson(lessonId, editLessonDto);
+            var result = await _lessonService.EditLesson(lessonId, editLessonDto);
             if (result.IsSuccessful)
             {
                 return Ok();
