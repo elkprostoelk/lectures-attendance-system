@@ -81,5 +81,32 @@ namespace LecturesAttendanceSystem.Api.Controllers
             }
             return BadRequest(ModelState);
         }
+
+        /// <summary>
+        /// Deletes a lesson.
+        /// </summary>
+        /// <param name="lessonId">Lesson ID</param>
+        /// <returns>Empty result</returns>
+        /// <response code="204">Lesson is deleted successfully</response>
+        /// <response code="400">If the data is invalid or lesson does not exist</response>
+        /// <response code="500">Any exception thrown</response>
+        [Authorize(Roles = "administrator, teacher")]
+        [HttpDelete("{lessonId:long}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteLesson(long lessonId)
+        {
+            var result = await _lessonService.DeleteLesson(lessonId);
+            if (result.IsSuccessful)
+            {
+                return NoContent();
+            }
+            foreach (var (key, value) in result.Errors)
+            {
+                ModelState.AddModelError(key, value);
+            }
+            return BadRequest(ModelState);
+        }
     }
 }

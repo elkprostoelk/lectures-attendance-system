@@ -36,5 +36,13 @@ namespace LecturesAttendanceSystem.Data.Repositories
             await _context.SaveChangesAsync();
             await transaction.CommitAsync();
         }
+
+        public async Task RemoveLesson(Lesson lesson)
+        {
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            _context.Lessons.Remove(lesson);
+            await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
+        }
     }
 }

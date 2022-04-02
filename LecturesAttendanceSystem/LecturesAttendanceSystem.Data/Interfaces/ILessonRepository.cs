@@ -8,5 +8,6 @@ namespace LecturesAttendanceSystem.Data.Interfaces
         Task AddLesson(Lesson lesson);
         Task<Lesson> GetLesson(long lessonId);
         Task UpdateLesson(Lesson lesson);
+        Task RemoveLesson(Lesson lesson);
     }
 }

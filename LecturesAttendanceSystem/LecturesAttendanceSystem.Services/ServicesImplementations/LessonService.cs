@@ -69,5 +69,21 @@ namespace LecturesAttendanceSystem.Services.ServicesImplementations
             }
             return result;
         }
+
+        public async Task<ServiceResult> DeleteLesson(long lessonId)
+        {
+            var result = new ServiceResult();
+            var lesson = await _lessonRepository.GetLesson(lessonId);
+            if (lesson is null)
+            {
+                result.IsSuccessful = false;
+                result.Errors.Add("LessonNotFound", "Lesson was not found!");
+            }
+            else
+            {
+                await _lessonRepository.RemoveLesson(lesson);
+            }
+            return result;
+        }
     }
 }
