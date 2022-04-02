@@ -6,6 +6,7 @@ using LecturesAttendanceSystem.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace LecturesAttendanceSystem.Api.Controllers
 {
@@ -50,7 +51,7 @@ namespace LecturesAttendanceSystem.Api.Controllers
             {
                 ModelState.AddModelError(key, value);
             }
-            return BadRequest();
+            return BadRequest(ModelState);
         }
 
         /// <summary>
@@ -79,7 +80,7 @@ namespace LecturesAttendanceSystem.Api.Controllers
             {
                 ModelState.AddModelError(key, value);
             }
-            return BadRequest();
+            return BadRequest(ModelState);
         }
 
         /// <summary>
@@ -106,7 +107,7 @@ namespace LecturesAttendanceSystem.Api.Controllers
             {
                 ModelState.AddModelError(key, value);
             }
-            return BadRequest();
+            return BadRequest(ModelState);
         }
     }
 }

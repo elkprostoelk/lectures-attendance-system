@@ -59,7 +59,7 @@ namespace LecturesAttendanceSystem.Api.Controllers
             {
                 ModelState.AddModelError(key, value);
             }
-            return BadRequest();
+            return BadRequest(ModelState);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace LecturesAttendanceSystem.Api.Controllers
             {
                 ModelState.AddModelError(key, value);
             }
-            return BadRequest();
+            return BadRequest(ModelState);
         }
 
         private string GenerateToken(string userName, long id, string role)
