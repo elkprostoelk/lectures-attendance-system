@@ -7,6 +7,7 @@ using AutoMapper;
 using LecturesAttendanceSystem.Api.Models;
 using LecturesAttendanceSystem.Services.Dtos;
 using LecturesAttendanceSystem.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -53,6 +54,36 @@ namespace LecturesAttendanceSystem.Api.Controllers
             {
                 var token = GenerateToken(user.Name, user.Id, user.Role);
                 return Ok(new {jwt = token});
+            }
+            foreach (var (key, value) in result.Errors)
+            {
+                ModelState.AddModelError(key, value);
+            }
+            return BadRequest();
+        }
+
+        /// <summary>
+        /// Change user's password.
+        /// </summary>
+        /// <param name="userId">User ID</param>
+        /// <param name="changePasswordModel">Password changing model</param>
+        /// <returns>Empty result</returns>
+        /// <response code="200">User password has been changed successfully</response>
+        /// <response code="400">If the data is invalid or user does not exist
+        /// or user is not an administrator and tries to change other user's password</response>
+        /// <response code="500">Any exception thrown</response>
+        [Authorize]
+        [HttpPatch("change-password/{userId:long}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> ChangePassword(long userId, ChangePasswordModel changePasswordModel)
+        {
+            var changePasswordDto = _mapper.Map<ChangePasswordDTO>(changePasswordModel);
+            var result = await _userService.ChangePassword(userId, changePasswordDto);
+            if (result.IsSuccessful)
+            {
+                return Ok();
             }
             foreach (var (key, value) in result.Errors)
             {

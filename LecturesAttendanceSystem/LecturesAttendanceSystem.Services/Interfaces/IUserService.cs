@@ -9,5 +9,6 @@ namespace LecturesAttendanceSystem.Services.Interfaces
         Task<ServiceResult> Login(LoginDTO loginDto);
         Task<ServiceResult> EditUser(long userId, EditUserDTO editUserDto);
         Task<ServiceResult> DeleteUser(long userId);
+        Task<ServiceResult> ChangePassword(long userId, ChangePasswordDTO changePasswordDto);
     }
 }

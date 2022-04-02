@@ -15,15 +15,18 @@ namespace LecturesAttendanceSystem.Services.ServicesImplementations
         private readonly IUserRepository _userRepository;
         private readonly IRoleRepository _roleRepository;
         private readonly IMapper _mapper;
+        private readonly IClaimDecorator _claimDecorator;
 
         public UserService(
             IUserRepository userRepository,
             IRoleRepository roleRepository,
-            IMapper mapper)
+            IMapper mapper,
+            IClaimDecorator claimDecorator)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
             _mapper = mapper;
+            _claimDecorator = claimDecorator;
         }
 
         public async Task<ServiceResult> RegisterUser(NewUserDTO newUserDto)
@@ -134,6 +137,42 @@ namespace LecturesAttendanceSystem.Services.ServicesImplementations
             else
             {
                 await _userRepository.RemoveUser(user);
+            }
+            return result;
+        }
+
+        public async Task<ServiceResult> ChangePassword(long userId, ChangePasswordDTO changePasswordDto)
+        {
+            var result = new ServiceResult();
+            var user = await _userRepository.GetUser(userId);
+            if (user is null)
+            {
+                result.IsSuccessful = false;
+                result.Errors.Add("UserNotExists", "User does not exist!");
+            }
+            else
+            {
+                if (user.Role.Name != "administrator" && user.Id != _claimDecorator.Id)
+                {
+                    result.IsSuccessful = false;
+                    result.Errors.Add("NotAdmin",
+                        "You cannot change other users' passwords because you are not an administrator!");
+                }
+                else
+                {
+                    var currentPasswordHash = HashPassword(user, changePasswordDto.CurrentPassword);
+                    if (user.PasswordHash != currentPasswordHash)
+                    {
+                        result.IsSuccessful = false;
+                        result.Errors.Add("WrongPassword", $"Current password is incorrect!");
+                    }
+                    else
+                    {
+                        var newPasswordHash = HashPassword(user, changePasswordDto.NewPassword);
+                        user.PasswordHash = newPasswordHash;
+                        await _userRepository.UpdateUser(user);
+                    }
+                }
             }
             return result;
         }
