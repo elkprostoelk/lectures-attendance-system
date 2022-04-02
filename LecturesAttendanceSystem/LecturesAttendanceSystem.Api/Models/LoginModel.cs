@@ -11,8 +11,5 @@ namespace LecturesAttendanceSystem.Api.Models
         [Required]
         [StringLength(20, MinimumLength = 8)]
         public string Password { get; set; }
-        
-        [Required]
-        public int RoleId { get; set; }
     }
 }

@@ -88,21 +88,13 @@ namespace LecturesAttendanceSystem.Services.ServicesImplementations
                 }
                 else
                 {
-                    if (user.RoleId != loginDto.RoleId)
+                    result.IsSuccessful = true;
+                    result.ResultObject = new UserDTO
                     {
-                        result.IsSuccessful = false;
-                        result.Errors.Add("NotInRole", $"User {loginDto.UserName} does not have this role!");
-                    }
-                    else
-                    {
-                        result.IsSuccessful = true;
-                        result.ResultObject = new UserDTO
-                        {
-                            Id = user.Id,
-                            Name = user.Name,
-                            Role = user.Role.Name
-                        };
-                    }
+                        Id = user.Id,
+                        Name = user.Name,
+                        Role = user.Role.Name
+                    };
                 }
             }
             return result;
