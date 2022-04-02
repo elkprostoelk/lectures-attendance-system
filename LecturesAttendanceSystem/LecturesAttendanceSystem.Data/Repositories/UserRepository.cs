@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LecturesAttendanceSystem.Data.Entities;
@@ -51,5 +52,11 @@ namespace LecturesAttendanceSystem.Data.Repositories
             await _context.SaveChangesAsync();
             await transaction.CommitAsync();
         }
+
+        public async Task<ICollection<User>> GetUsers(ICollection<long> participantIds) =>
+            await _context.Users
+                .Include(u => u.Role)
+                .Where(u => participantIds.Contains(u.Id))
+                .ToListAsync();
     }
 }

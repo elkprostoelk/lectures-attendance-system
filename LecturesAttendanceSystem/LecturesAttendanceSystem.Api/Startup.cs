@@ -49,9 +49,11 @@ namespace LecturesAttendanceSystem.Api
             
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<ILessonRepository, LessonRepository>();
 
             services.AddScoped<IClaimDecorator, ClaimDecorator>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ILessonService, LessonService>();
             
             services.AddRsaAuthentication(Configuration);
             services.AddDbContext<AttendanceSystemDbContext>(options => 

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using LecturesAttendanceSystem.Data.Entities;
 
@@ -11,5 +12,6 @@ namespace LecturesAttendanceSystem.Data.Interfaces
         Task<User> GetUser(long userId);
         Task UpdateUser(User user);
         Task RemoveUser(User user);
+        Task<ICollection<User>> GetUsers(ICollection<long> participantIds);
     }
 }
