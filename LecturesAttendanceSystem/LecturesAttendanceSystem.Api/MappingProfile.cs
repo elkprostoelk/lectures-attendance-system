@@ -12,6 +12,7 @@ namespace LecturesAttendanceSystem.Api
             CreateMap<LoginModel, LoginDTO>();
             CreateMap<ChangePasswordModel, ChangePasswordDTO>();
             CreateMap<NewLessonModel, NewLessonDTO>();
+            CreateMap<EditLessonModel, EditLessonDTO>();
         }
     }
 }

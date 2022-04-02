@@ -6,5 +6,6 @@ namespace LecturesAttendanceSystem.Services.Interfaces
     public interface ILessonService
     {
         Task<ServiceResult> CreateLesson(NewLessonDTO newLessonDto);
+        Task<ServiceResult> EditLesson(long lessonId, EditLessonDTO editLessonDto);
     }
 }

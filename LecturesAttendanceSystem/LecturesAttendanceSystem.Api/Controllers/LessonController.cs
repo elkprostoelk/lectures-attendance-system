@@ -52,5 +52,25 @@ namespace LecturesAttendanceSystem.Api.Controllers
             }
             return BadRequest(ModelState);
         }
+
+        [Authorize(Roles = "administrator, teacher")]
+        [HttpPut("{lessonId:long}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> EditLesson(long lessonId, EditLessonModel editLessonModel)
+        {
+            var editLessonDto = _mapper.Map<EditLessonDTO>(editLessonModel);
+            ServiceResult result = await _lessonService.EditLesson(lessonId, editLessonDto);
+            if (result.IsSuccessful)
+            {
+                return Ok();
+            }
+            foreach (var (key, value) in result.Errors)
+            {
+                ModelState.AddModelError(key, value);
+            }
+            return BadRequest(ModelState);
+        }
     }
 }

@@ -50,5 +50,24 @@ namespace LecturesAttendanceSystem.Services.ServicesImplementations
             
             return result;
         }
+
+        public async Task<ServiceResult> EditLesson(long lessonId, EditLessonDTO editLessonDto)
+        {
+            var result = new ServiceResult();
+            var lesson = await _lessonRepository.GetLesson(lessonId);
+            if (lesson is null)
+            {
+                result.IsSuccessful = false;
+                result.Errors.Add("LessonNotFound", "Lesson was not found!");
+            }
+            else
+            {
+                lesson.Name = editLessonDto.Name;
+                lesson.ScheduledOn = editLessonDto.ScheduledOn;
+                lesson.Participants = await _userRepository.GetUsers(editLessonDto.Participants);
+                await _lessonRepository.UpdateLesson(lesson);
+            }
+            return result;
+        }
     }
 }

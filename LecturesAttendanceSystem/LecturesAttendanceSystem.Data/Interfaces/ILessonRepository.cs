@@ -6,5 +6,7 @@ namespace LecturesAttendanceSystem.Data.Interfaces
     public interface ILessonRepository
     {
         Task AddLesson(Lesson lesson);
+        Task<Lesson> GetLesson(long lessonId);
+        Task UpdateLesson(Lesson lesson);
     }
 }
