@@ -128,5 +128,32 @@ namespace LecturesAttendanceSystem.Services.ServicesImplementations
 
             return result;
         }
+
+        public async Task<ServiceResult> MarkPresence(long lessonId, long userId)
+        {
+            var result = new ServiceResult();
+            var lesson = await _lessonRepository.GetLesson(lessonId);
+            if (lesson is null)
+            {
+                result.IsSuccessful = false;
+                result.Errors.Add("LessonNotFound", "Lesson was not found!");
+            }
+            else
+            {
+                var user = await _userRepository.GetUser(userId);
+                if (user is null)
+                {
+                    result.IsSuccessful = false;
+                    result.Errors.Add("UserNotFound", "User was not found!");
+                }
+                else
+                {
+                    var present = await _lessonRepository.MarkPresence(lesson, user);
+                    result.ResultObject = new { userId, present };
+                }
+            }
+
+            return result;
+        }
     }
 }

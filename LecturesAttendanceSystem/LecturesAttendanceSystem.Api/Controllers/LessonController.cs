@@ -110,6 +110,22 @@ namespace LecturesAttendanceSystem.Api.Controllers
             return BadRequest(ModelState);
         }
 
+        [Authorize(Roles = "administrator, teacher")]
+        [HttpPatch("mark-presence/{lessonId:long}/{userId:long}")]
+        public async Task<IActionResult> MarkStudentPresence(long lessonId, long userId)
+        {
+            var result = await _lessonService.MarkPresence(lessonId, userId);
+            if (result.IsSuccessful)
+            {
+                return Ok(result.ResultObject);
+            }
+            foreach (var (key, value) in result.Errors)
+            {
+                ModelState.AddModelError(key, value);
+            }
+            return BadRequest(ModelState);
+        }
+
         /// <summary>
         /// Counts all absences of all students for the specified period of time.
         /// </summary>

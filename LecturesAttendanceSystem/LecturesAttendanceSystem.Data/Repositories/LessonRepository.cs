@@ -56,5 +56,24 @@ namespace LecturesAttendanceSystem.Data.Repositories
                     l.ScheduledOn <= DateTime.Now
                     && l.ScheduledOn >= limitDate)
                 .ToListAsync();
+
+        public async Task<bool?> MarkPresence(Lesson lesson, User user)
+        {
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            lesson.Participants.Add(user);
+            await _context.SaveChangesAsync();
+
+            var lessonParticipant = lesson.LessonParticipants
+                .SingleOrDefault(lp => lp.ParticipantId == user.Id);
+            if (lessonParticipant is null)
+            {
+                return null;
+            }
+            lessonParticipant.Present = !lessonParticipant.Present;
+            _context.Lessons.Update(lesson);
+            await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
+            return lessonParticipant.Present;
+        }
     }
 }

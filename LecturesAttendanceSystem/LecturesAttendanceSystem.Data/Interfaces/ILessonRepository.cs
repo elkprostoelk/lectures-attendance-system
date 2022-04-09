@@ -12,5 +12,6 @@ namespace LecturesAttendanceSystem.Data.Interfaces
         Task UpdateLesson(Lesson lesson);
         Task RemoveLesson(Lesson lesson);
         Task<ICollection<Lesson>> GetLessons(DateTime limitDate);
+        Task<bool?> MarkPresence(Lesson lesson, User user);
     }
 }
