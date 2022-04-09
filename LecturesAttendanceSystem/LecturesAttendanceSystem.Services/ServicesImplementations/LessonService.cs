@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LecturesAttendanceSystem.Data.Entities;
@@ -92,7 +91,7 @@ namespace LecturesAttendanceSystem.Services.ServicesImplementations
             return result;
         }
 
-        public async Task<ServiceResult> CountAbsences(AbsencePeriods duration)
+        public async Task<ServiceResult> CountAbsences(AbsencePeriods duration, long? userId = null)
         {
             var result = new ServiceResult();
             var now = DateTime.Now;
@@ -105,11 +104,28 @@ namespace LecturesAttendanceSystem.Services.ServicesImplementations
                 _ => now
             };
             var filteredLessons = await _lessonRepository.GetLessons(limitDate);
-            result.ResultObject = filteredLessons.SelectMany(l => l.LessonParticipants
+            var absencesCount = filteredLessons.SelectMany(l => l.LessonParticipants
                         .Where(lp => lp.Participant.IsStudent && !lp.Present),
                     (l, lp) => new LessonParticipantDTO {LessonId = l.Id, ParticipantId = lp.ParticipantId})
                 .GroupBy(lp => lp.ParticipantId, (partId, abs) =>
                     new AbsencesCountDTO {ParticipantId = partId, AbsencesCount = abs.Count()});
+            result.ResultObject = absencesCount;
+            if (!userId.HasValue)
+            {
+                return result;
+            }
+
+            var user = await _userRepository.GetUser(userId.Value);
+            if (user is not null && user.IsStudent)
+            {
+                result.ResultObject = absencesCount.SingleOrDefault(ac => ac.ParticipantId == userId);
+            }
+            else
+            {
+                result.IsSuccessful = false;
+                result.Errors.Add("UserNotFound", "User was not found!");
+            }
+
             return result;
         }
     }

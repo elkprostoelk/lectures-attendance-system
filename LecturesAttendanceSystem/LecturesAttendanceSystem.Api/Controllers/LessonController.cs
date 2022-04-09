@@ -1,7 +1,7 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using AutoMapper;
 using LecturesAttendanceSystem.Api.Models;
-using LecturesAttendanceSystem.Data.Entities;
 using LecturesAttendanceSystem.Services.Dtos;
 using LecturesAttendanceSystem.Services.Enums;
 using LecturesAttendanceSystem.Services.Interfaces;
@@ -111,11 +111,43 @@ namespace LecturesAttendanceSystem.Api.Controllers
             return BadRequest(ModelState);
         }
 
+        /// <summary>
+        /// Counts all absences of all students for the specified period of time.
+        /// </summary>
+        /// <param name="duration">The period of time to get the absences by</param>
+        /// <returns>List of students and their absences' count</returns>
+        /// <response code="200">List of absences has been got successfully</response>
+        /// <response code="500">Any exception thrown</response>
         [Authorize(Roles = "administrator, teacher")]
         [HttpGet("count-absences/{duration}")]
         public async Task<IActionResult> CountAbsences(AbsencePeriods duration)
         {
             var result = await _lessonService.CountAbsences(duration);
+            if (result.IsSuccessful)
+            {
+                return Ok(result.ResultObject);
+            }
+            foreach (var (key, value) in result.Errors)
+            {
+                ModelState.AddModelError(key, value);
+            }
+            return BadRequest(ModelState);
+        }
+
+        /// <summary>
+        /// Counts absences of the single student for the specified period of time.
+        /// </summary>
+        /// <param name="duration">The period of time to get the absences by</param>
+        /// <param name="userId">User ID to get its absences</param>
+        /// <returns>Student's absences' count</returns>
+        /// <response code="200">Student's absences' count has been got successfully</response>
+        /// <response code="400">If user does not exist</response>
+        /// <response code="500">Any exception thrown</response>
+        [Authorize(Roles = "administrator, teacher")]
+        [HttpGet("count-absences/{duration}/{userId:long}")]
+        public async Task<IActionResult> CountAbsences(AbsencePeriods duration, long userId)
+        {
+            var result = await _lessonService.CountAbsences(duration, userId);
             if (result.IsSuccessful)
             {
                 return Ok(result.ResultObject);
