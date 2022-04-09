@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using LecturesAttendanceSystem.Data;
 using LecturesAttendanceSystem.Data.Interfaces;
