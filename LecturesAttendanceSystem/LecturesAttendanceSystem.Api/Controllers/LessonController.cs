@@ -1,7 +1,9 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using LecturesAttendanceSystem.Api.Models;
+using LecturesAttendanceSystem.Data.Entities;
 using LecturesAttendanceSystem.Services.Dtos;
+using LecturesAttendanceSystem.Services.Enums;
 using LecturesAttendanceSystem.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -101,6 +103,22 @@ namespace LecturesAttendanceSystem.Api.Controllers
             if (result.IsSuccessful)
             {
                 return NoContent();
+            }
+            foreach (var (key, value) in result.Errors)
+            {
+                ModelState.AddModelError(key, value);
+            }
+            return BadRequest(ModelState);
+        }
+
+        [Authorize(Roles = "administrator, teacher")]
+        [HttpGet("count-absences/{duration}")]
+        public async Task<IActionResult> CountAbsences(AbsencePeriods duration)
+        {
+            var result = await _lessonService.CountAbsences(duration);
+            if (result.IsSuccessful)
+            {
+                return Ok(result.ResultObject);
             }
             foreach (var (key, value) in result.Errors)
             {

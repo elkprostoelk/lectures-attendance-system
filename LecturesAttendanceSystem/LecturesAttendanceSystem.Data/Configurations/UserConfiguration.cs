@@ -31,11 +31,25 @@ namespace LecturesAttendanceSystem.Data.Configurations
 
             builder.HasMany(u => u.Lessons)
                 .WithMany(l => l.Participants)
-                .UsingEntity(j => j.ToTable("LessonParticipants"));
+                .UsingEntity<LessonParticipant>(j =>
+                    j.HasOne(lp => lp.Lesson)
+                        .WithMany(l => l.LessonParticipants)
+                        .HasForeignKey(lp => lp.LessonId),
 
-            builder.HasMany(u => u.PresentOn)
-                .WithMany(l => l.PresentParticipants)
-                .UsingEntity(j => j.ToTable("LessonPresence"));
+                    j =>
+                    j.HasOne(lp => lp.Participant)
+                        .WithMany(p => p.LessonParticipants)
+                        .HasForeignKey(lp => lp.ParticipantId),
+                    
+                    j =>
+                    {
+                        j.HasKey(lp => new {lp.LessonId, lp.ParticipantId});
+                        j.Property(lp => lp.Present)
+                            .IsRequired()
+                            .HasDefaultValue(false);
+                        j.ToTable("LessonParticipants");
+                    }
+                );
         }
     }
 }

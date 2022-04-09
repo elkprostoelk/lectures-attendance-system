@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 
 namespace LecturesAttendanceSystem.Data.Entities
@@ -22,11 +21,11 @@ namespace LecturesAttendanceSystem.Data.Entities
         public Role Role { get; set; }
 
         public ICollection<Lesson> Lessons { get; set; }
-        
-        public ICollection<Lesson> PresentOn { get; set; }
 
         public bool IsTeacher => Role.Name == "teacher";
 
         public bool IsStudent => Role.Name == "student";
+        
+        public ICollection<LessonParticipant> LessonParticipants { get; set; }
     }
 }

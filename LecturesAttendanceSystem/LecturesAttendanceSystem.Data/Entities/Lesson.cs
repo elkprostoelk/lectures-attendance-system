@@ -13,6 +13,6 @@ namespace LecturesAttendanceSystem.Data.Entities
         
         public ICollection<User> Participants { get; set; }
         
-        public ICollection<User> PresentParticipants { get; set; }
+        public ICollection<LessonParticipant> LessonParticipants { get; set; }
     }
 }

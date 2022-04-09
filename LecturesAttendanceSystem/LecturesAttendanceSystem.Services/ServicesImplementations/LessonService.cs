@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LecturesAttendanceSystem.Data.Entities;
 using LecturesAttendanceSystem.Data.Interfaces;
 using LecturesAttendanceSystem.Services.Dtos;
+using LecturesAttendanceSystem.Services.Enums;
 using LecturesAttendanceSystem.Services.Interfaces;
 
 namespace LecturesAttendanceSystem.Services.ServicesImplementations
@@ -20,7 +22,7 @@ namespace LecturesAttendanceSystem.Services.ServicesImplementations
             _lessonRepository = lessonRepository;
             _userRepository = userRepository;
         }
-        
+
         public async Task<ServiceResult> CreateLesson(NewLessonDTO newLessonDto)
         {
             var result = new ServiceResult();
@@ -38,16 +40,18 @@ namespace LecturesAttendanceSystem.Services.ServicesImplementations
                 result.IsSuccessful = false;
                 result.Errors.Add("NoTeacher", "Lesson should contain a teacher!");
             }
+
             if (!containsStudents)
             {
                 result.IsSuccessful = false;
                 result.Errors.Add("NoStudents", "Lesson should contain at least one student!");
             }
+
             if (result.IsSuccessful)
             {
                 await _lessonRepository.AddLesson(lesson);
             }
-            
+
             return result;
         }
 
@@ -67,6 +71,7 @@ namespace LecturesAttendanceSystem.Services.ServicesImplementations
                 lesson.Participants = await _userRepository.GetUsers(editLessonDto.Participants);
                 await _lessonRepository.UpdateLesson(lesson);
             }
+
             return result;
         }
 
@@ -83,6 +88,28 @@ namespace LecturesAttendanceSystem.Services.ServicesImplementations
             {
                 await _lessonRepository.RemoveLesson(lesson);
             }
+
+            return result;
+        }
+
+        public async Task<ServiceResult> CountAbsences(AbsencePeriods duration)
+        {
+            var result = new ServiceResult();
+            var now = DateTime.Now;
+            var limitDate = duration switch
+            {
+                AbsencePeriods.Daily => now.AddDays(-1),
+                AbsencePeriods.Week => now.AddDays(-7),
+                AbsencePeriods.Month => now.AddMonths(-1),
+                AbsencePeriods.Year => now.AddYears(-1),
+                _ => now
+            };
+            var filteredLessons = await _lessonRepository.GetLessons(limitDate);
+            result.ResultObject = filteredLessons.SelectMany(l => l.LessonParticipants
+                        .Where(lp => lp.Participant.IsStudent && !lp.Present),
+                    (l, lp) => new LessonParticipantDTO {LessonId = l.Id, ParticipantId = lp.ParticipantId})
+                .GroupBy(lp => lp.ParticipantId, (partId, abs) =>
+                    new AbsencesCountDTO {ParticipantId = partId, AbsencesCount = abs.Count()});
             return result;
         }
     }
