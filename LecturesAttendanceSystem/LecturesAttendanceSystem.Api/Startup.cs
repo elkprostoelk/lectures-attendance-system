@@ -13,10 +13,10 @@ namespace LecturesAttendanceSystem.Api
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; }
+        private readonly IConfiguration _configuration;
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -26,9 +26,9 @@ namespace LecturesAttendanceSystem.Api
             
             services.ConfigureServices();
             
-            services.AddRsaAuthentication(Configuration);
+            services.AddRsaAuthentication(_configuration);
             services.AddDbContext<AttendanceSystemDbContext>(options => 
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
             
             services.AddControllers();
 
