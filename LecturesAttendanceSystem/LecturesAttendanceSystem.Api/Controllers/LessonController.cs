@@ -110,6 +110,15 @@ namespace LecturesAttendanceSystem.Api.Controllers
             return BadRequest(ModelState);
         }
 
+        /// <summary>
+        /// Puts a mark of student's presence on a lesson.
+        /// </summary>
+        /// <param name="userId">User ID</param>
+        /// <param name="lessonId">Lesson ID</param>
+        /// <returns>Student's ID and his presence mark</returns>
+        /// <response code="200">Presence was marked successfully</response>
+        /// <response code="400">If a lesson/user does not exist</response>
+        /// <response code="500">Any exception thrown</response>
         [Authorize(Roles = "administrator, teacher")]
         [HttpPatch("mark-presence/{lessonId:long}/{userId:long}")]
         public async Task<IActionResult> MarkStudentPresence(long lessonId, long userId)

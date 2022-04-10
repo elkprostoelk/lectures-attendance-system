@@ -29,6 +29,7 @@ namespace LecturesAttendanceSystem.Data.Repositories
         public async Task<Lesson> GetLesson(long lessonId) =>
             await _context.Lessons
                 .Include(l => l.Participants)
+                .Include(l => l.LessonParticipants)
                 .SingleOrDefaultAsync(l => l.Id == lessonId);
 
         public async Task UpdateLesson(Lesson lesson)
