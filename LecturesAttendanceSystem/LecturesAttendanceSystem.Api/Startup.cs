@@ -1,6 +1,3 @@
-using System;
-using System.IO;
-using System.Reflection;
 using LecturesAttendanceSystem.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -10,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 using Serilog;
 
 namespace LecturesAttendanceSystem.Api
@@ -28,42 +24,15 @@ namespace LecturesAttendanceSystem.Api
         {
             services.AddRouting(options => options.LowercaseUrls = true);
             
-            services.AddServices();
+            services.ConfigureServices();
             
             services.AddRsaAuthentication(Configuration);
             services.AddDbContext<AttendanceSystemDbContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Lectures Attendance System", Version = "v1" });
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    In = ParameterLocation.Header,
-                    Description = "Enter your token here",
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.Http,
-                    BearerFormat = "JWT",
-                    Scheme = "bearer"
-                });
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        Array.Empty<string>()
-                    }
-                });
-                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
-            });
+
+            services.ConfigureSwagger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

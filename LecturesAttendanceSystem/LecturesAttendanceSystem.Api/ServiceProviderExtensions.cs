@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Reflection;
 using System.Security.Cryptography;
 using AutoMapper;
 using LecturesAttendanceSystem.Data.Interfaces;
@@ -9,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 namespace LecturesAttendanceSystem.Api
 {
@@ -48,7 +51,7 @@ namespace LecturesAttendanceSystem.Api
                 });
         }
 
-        public static void AddServices(this IServiceCollection services)
+        public static void ConfigureServices(this IServiceCollection services)
         {
             var mappingConfig = new MapperConfiguration(mc =>
             {
@@ -65,6 +68,39 @@ namespace LecturesAttendanceSystem.Api
             services.AddScoped<IClaimDecorator, ClaimDecorator>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ILessonService, LessonService>();
+        }
+
+        public static void ConfigureSwagger(this IServiceCollection services)
+        {
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Lectures Attendance System", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Enter your token here",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    BearerFormat = "JWT",
+                    Scheme = "bearer"
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+            });
         }
     }
 }
