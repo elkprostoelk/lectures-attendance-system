@@ -30,6 +30,7 @@ namespace LecturesAttendanceSystem.Services.ServicesImplementations
             {
                 Name = newLessonDto.Name,
                 ScheduledOn = newLessonDto.ScheduledOn,
+                LessonType = newLessonDto.LessonType,
                 Participants = participants
             };
             var containsTeacher = participants.Any(u => u.IsTeacher);
@@ -67,6 +68,7 @@ namespace LecturesAttendanceSystem.Services.ServicesImplementations
             {
                 lesson.Name = editLessonDto.Name;
                 lesson.ScheduledOn = editLessonDto.ScheduledOn;
+                lesson.LessonType = editLessonDto.LessonType;
                 lesson.Participants = await _userRepository.GetUsers(editLessonDto.Participants);
                 await _lessonRepository.UpdateLesson(lesson);
             }

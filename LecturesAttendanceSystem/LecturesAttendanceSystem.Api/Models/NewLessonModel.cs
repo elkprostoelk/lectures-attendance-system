@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using LecturesAttendanceSystem.Data.Enums;
 
 namespace LecturesAttendanceSystem.Api.Models
 {
@@ -11,6 +12,9 @@ namespace LecturesAttendanceSystem.Api.Models
         
         [Required]
         public DateTime ScheduledOn { get; set; }
+        
+        [Required]
+        public LessonTypes LessonType { get; set; }
         
         [Required]
         public ICollection<long> ParticipantIds { get; set; }

@@ -1,4 +1,5 @@
 using LecturesAttendanceSystem.Data.Entities;
+using LecturesAttendanceSystem.Data.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,6 +19,10 @@ namespace LecturesAttendanceSystem.Data.Configurations
 
             builder.Property(l => l.ScheduledOn)
                 .IsRequired();
+
+            builder.Property(l => l.LessonType)
+                .IsRequired()
+                .HasDefaultValue(LessonTypes.Lecture);
         }
     }
 }

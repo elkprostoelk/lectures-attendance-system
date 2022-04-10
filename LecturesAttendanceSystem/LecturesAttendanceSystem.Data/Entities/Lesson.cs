@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using LecturesAttendanceSystem.Data.Enums;
 
 namespace LecturesAttendanceSystem.Data.Entities
 {
@@ -8,6 +9,8 @@ namespace LecturesAttendanceSystem.Data.Entities
         public long Id { get; set; }
         
         public string Name { get; set; }
+        
+        public LessonTypes LessonType { get; set; }
         
         public DateTime ScheduledOn { get; set; }
         

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="AttendanceSystem@localhost" uuid="98e23aa1-cea1-4bd7-b446-bd5b20f0b9b4">
+    <data-source source="LOCAL" name="AttendanceSystem@localhost" uuid="a8faf7cb-36cf-47b3-b29b-b100f7e45cdd">
       <driver-ref>sqlserver.jtds</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>net.sourceforge.jtds.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:jtds:sqlserver://localhost:1433/AttendanceSystem;instance=SQLEXPRESS</jdbc-url>
+      <jdbc-url>jdbc:jtds:sqlserver://localhost/AttendanceSystem;instance=SQLEXPRESS</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
