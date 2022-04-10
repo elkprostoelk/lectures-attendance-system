@@ -1,12 +1,7 @@
 using System;
 using System.IO;
 using System.Reflection;
-using AutoMapper;
 using LecturesAttendanceSystem.Data;
-using LecturesAttendanceSystem.Data.Interfaces;
-using LecturesAttendanceSystem.Data.Repositories;
-using LecturesAttendanceSystem.Services.Interfaces;
-using LecturesAttendanceSystem.Services.ServicesImplementations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -33,21 +28,7 @@ namespace LecturesAttendanceSystem.Api
         {
             services.AddRouting(options => options.LowercaseUrls = true);
             
-            var mappingConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new MappingProfile());
-            });
-            IMapper mapper = mappingConfig.CreateMapper();
-            services.AddSingleton(mapper);
-            services.AddHttpContextAccessor();
-            
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IRoleRepository, RoleRepository>();
-            services.AddScoped<ILessonRepository, LessonRepository>();
-
-            services.AddScoped<IClaimDecorator, ClaimDecorator>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<ILessonService, LessonService>();
+            services.AddServices();
             
             services.AddRsaAuthentication(Configuration);
             services.AddDbContext<AttendanceSystemDbContext>(options => 
