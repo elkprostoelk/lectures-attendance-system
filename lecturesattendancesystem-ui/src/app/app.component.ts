@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'lecturesattendancesystem-ui';
+  date: Date;
+
+  constructor() {
+    this.date = new Date();
+  }
 }
