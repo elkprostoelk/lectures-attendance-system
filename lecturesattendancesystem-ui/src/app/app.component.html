@@ -34,13 +34,13 @@
         </div>
       </ng-template>
 
-      <div class="d-block" *ngIf="1">
+      <div class="d-block" *ngIf="isInRole('administrator')">
         <button class="btn btn-primary btn-sm" type="button" routerLink="/admin">Admin panel</button>
       </div>
 
-      <div class="dropdown text-end" *ngIf="1; else notSignedIn">
+      <div class="dropdown text-end" *ngIf="signedIn(); else notSignedIn">
         <a href="#" class="d-block link-light text-decoration-none dropdown-toggle marg-left" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-           user?.name
+          {{user?.name}}
           <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
         </a>
         <ul class="dropdown-menu dropdown-menu-dark text-small" aria-labelledby="dropdownUser1">
@@ -48,8 +48,8 @@
           <li><a class="dropdown-item" href="#">Settings</a></li>
           <li><a class="dropdown-item" href="#">Profile</a></li>
           <li><hr class="dropdown-divider"></li>
-          <li><span class="dropdown-item-text">Signed in as user?.fullRoleName</span></li>
-          <li><a class="dropdown-item" href="javascript:void(0)">Sign out</a></li>
+          <li><span class="dropdown-item-text">Signed in as {{user?.role}}</span></li>
+          <li><a class="dropdown-item" href="javascript:void(0)" (click)="signOut()">Sign out</a></li>
         </ul>
       </div>
     </div>

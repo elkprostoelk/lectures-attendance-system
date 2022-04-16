@@ -1,0 +1,19 @@
+<div class="container text-center form-signin w-50">
+  <form [formGroup]="loginForm" (submit)="login(loginForm.value)">
+    <img class="mb-4" src="../../../favicon.ico" alt="" width="62">
+    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+    <div class="alert-danger mb-2" [hidden]="!userNameField?.errors && !passwordField?.errors">
+      {{logErrors(userNameField)}}
+      {{logErrors(passwordField)}}
+    </div>
+    <div class="form-floating">
+      <input class="form-control" type="text" id="floatingInput" formControlName="username" placeholder="Your user name">
+      <label for="floatingInput">User name</label>
+    </div>
+    <div class="form-floating">
+      <input type="password" class="form-control mb-3" id="floatingPassword" formControlName="password" placeholder="Password">
+      <label for="floatingPassword">Password</label>
+    </div>
+    <button class="w-100 btn btn-lg btn-primary" [disabled]="loginForm.invalid">Sign in</button>
+  </form>
+</div>
