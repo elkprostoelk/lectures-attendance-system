@@ -14,6 +14,9 @@ namespace LecturesAttendanceSystem.Data.Configurations
                 .HasMaxLength(100)
                 .IsRequired();
 
+            builder.Property(u => u.RegisteredOn)
+                .IsRequired();
+
             builder.HasIndex(u => u.Name)
                 .IsUnique();
             

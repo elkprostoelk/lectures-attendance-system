@@ -8,6 +8,8 @@ namespace LecturesAttendanceSystem.Data.Entities
         
         public string Name { get; set; }
         
+        public System.DateTime RegisteredOn { get; set; }
+        
         public string FirstName { get; set; }
         
         public string LastName { get; set; }

@@ -51,6 +51,7 @@ namespace LecturesAttendanceSystem.Services.ServicesImplementations
                     var user = new User
                     {
                         Name = newUserDto.Name,
+                        RegisteredOn = DateTime.Now,
                         FirstName = newUserDto.FirstName,
                         LastName = newUserDto.LastName,
                         RoleId = role.Id
