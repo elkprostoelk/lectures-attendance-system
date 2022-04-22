@@ -1,5 +1,6 @@
 using AutoMapper;
 using LecturesAttendanceSystem.Api.Models;
+using LecturesAttendanceSystem.Data.Entities;
 using LecturesAttendanceSystem.Services.Dtos;
 
 namespace LecturesAttendanceSystem.Api
@@ -13,6 +14,7 @@ namespace LecturesAttendanceSystem.Api
             CreateMap<ChangePasswordModel, ChangePasswordDTO>();
             CreateMap<NewLessonModel, NewLessonDTO>();
             CreateMap<EditLessonModel, EditLessonDTO>();
+            CreateMap<User, UserForAdminPanelDTO>();
         }
     }
 }

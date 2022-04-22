@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using LecturesAttendanceSystem.Data.Entities;
 using LecturesAttendanceSystem.Data.Interfaces;
@@ -18,5 +19,8 @@ namespace LecturesAttendanceSystem.Data.Repositories
         {
             return await _context.Roles.SingleOrDefaultAsync(r => r.Id == roleId);
         }
+
+        public async Task<ICollection<Role>> GetAllRoles() =>
+            await _context.Roles.ToListAsync();
     }
 }

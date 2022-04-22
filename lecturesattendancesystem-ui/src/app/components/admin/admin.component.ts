@@ -5,6 +5,7 @@ import {AuthService} from "../../services/auth/auth.service";
 import {Observable} from "rxjs";
 import {RoleDto} from "../../models/roleDTO";
 import {UserService} from "../../services/user/user.service";
+import {RoleService} from "../../services/role/role.service";
 
 @Component({
   selector: 'app-admin',
@@ -20,7 +21,8 @@ export class AdminComponent {
   constructor(
     private authService: AuthService,
     private builder: FormBuilder,
-    private userService: UserService
+    private userService: UserService,
+    private roleService: RoleService
   ) {
     this.createUserForm = this.builder.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
@@ -29,7 +31,7 @@ export class AdminComponent {
       password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]],
       roleId: ['', Validators.required]
     });
-    this.roles$ = new Observable<RoleDto[]>();
+    this.roles$ = this.roleService.getAllRoles();
     this.userService.getAllUsers()
       .subscribe(data => {
         this.userDtos = data;

@@ -66,6 +66,7 @@ namespace LecturesAttendanceSystem.Api
             services.AddScoped<ILessonRepository, LessonRepository>();
 
             services.AddScoped<IClaimDecorator, ClaimDecorator>();
+            services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ILessonService, LessonService>();
         }
