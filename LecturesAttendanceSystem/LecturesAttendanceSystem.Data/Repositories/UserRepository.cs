@@ -58,5 +58,10 @@ namespace LecturesAttendanceSystem.Data.Repositories
                 .Include(u => u.Role)
                 .Where(u => participantIds.Contains(u.Id))
                 .ToListAsync();
+
+        public async Task<ICollection<User>> GetAllUsers() =>
+            await _context.Users
+                .Include(u => u.Role)
+                .ToListAsync();
     }
 }

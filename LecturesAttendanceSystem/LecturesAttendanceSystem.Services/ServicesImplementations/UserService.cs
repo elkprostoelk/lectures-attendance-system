@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -167,6 +169,20 @@ namespace LecturesAttendanceSystem.Services.ServicesImplementations
                     }
                 }
             }
+            return result;
+        }
+
+        public async Task<ServiceResult> GetAllUsers()
+        {
+            var result = new ServiceResult();
+            var users = await _userRepository.GetAllUsers();
+            result.ResultObject = users.Select(u =>
+            {
+                var dto = _mapper.Map<UserForAdminPanelDTO>(u);
+                dto.FullName = string.Join(' ', u.LastName, u.FirstName);
+                dto.Role = u.Role.Name;
+                return dto;
+            });
             return result;
         }
 

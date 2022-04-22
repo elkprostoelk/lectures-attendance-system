@@ -25,6 +25,22 @@ namespace LecturesAttendanceSystem.Api.Controllers
             _userService = userService;
         }
 
+        [Authorize(Roles = "administrator")]
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            ServiceResult result = await _userService.GetAllUsers();
+            if (result.IsSuccessful)
+            {
+                return Ok(result.ResultObject);
+            }
+            foreach (var (key, value) in result.Errors)
+            {
+                ModelState.AddModelError(key, value);
+            }
+            return BadRequest(ModelState);
+        }
+
         /// <summary>
         /// Creates a user.
         /// </summary>

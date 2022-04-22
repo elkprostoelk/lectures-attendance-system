@@ -1,1 +1,80 @@
-<p>admin works!</p>
+<h2 class="mb-3">Welcome to the Admin Panel!</h2>
+<h4 class="mb-3">Users</h4>
+
+<div class="d-grid gap-2 d-md-flex">
+  <button class="btn btn-sm btn-success mb-3" type="button" data-bs-toggle="modal" data-bs-target="#addUser">
+    Add
+  </button>
+
+  <form class="d-grid gap-2 d-md-flex" (submit)="searchUser(searchString)">
+    <input class="form-control-sm mb-3" type="text" placeholder="Search users here" #searchString>
+    <button class="btn btn-sm btn-outline-success mb-3">Search user</button>
+    <button class="btn btn-sm btn-outline-danger mb-3" type="button" (click)="resetResults()">Reset search results
+    </button>
+  </form>
+</div>
+
+<div class="modal fade" id="addUser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="addUserLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content" [formGroup]="createUserForm" (submit)="createUser(createUserForm.value)">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addUserLabel">Add new user</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label for="userName">User name</label>
+        <input class="form-control mb-3" type="text" formControlName="name" id="userName">
+        <label for="firstName">First name</label>
+        <input class="form-control mb-3" type="text" formControlName="firstName" id="firstName">
+        <label for="lastName">Last name</label>
+        <input class="form-control mb-3" type="text" formControlName="lastName" id="lastName">
+        <label for="roleId">Role</label>
+        <select class="form-select mb-3" formControlName="roleId" id="roleId">
+          <option value disabled selected>Select a role:</option>
+          <option *ngFor="let role of roles$ | async" [value]="role.id">{{ role.name }}</option>
+        </select>
+        <label for="password">Password</label>
+        <input class="form-control mb-3" type="password" formControlName="password" id="password">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button class="btn btn-primary" data-bs-dismiss="modal" [disabled]="createUserForm.invalid">Create</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card w-50 mb-3">
+  <div class="card-body">
+    <div class="card-text" *ngIf="userDtos; else loading">
+      <div class="row mb-3">
+        <div class="col fw-bolder">User Name</div>
+        <div class="col fw-bolder">Full Name</div>
+        <div class="col fw-bolder">Registered on</div>
+        <div class="col fw-bolder">Operations</div>
+      </div>
+      <div *ngFor="let user of userDtos">
+        <div class="row mb-3">
+          <input type="hidden" [value]="user.id">
+          <div class="col">{{user.name}}</div>
+          <div class="col">{{user.fullName}}</div>
+          <div class="col">{{user.registeredOn | date: 'medium'}}</div>
+          <div class="col">
+            <div class="d-grid gap-2 d-md-flex">
+              <button class="btn btn-sm btn-warning" type="button">Edit</button>
+              <button class="btn btn-sm btn-danger" type="button" [disabled]="isMe(user.name)"
+                      (click)="deleteUser(user.id)">Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #loading class="card-text">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </ng-template>
+  </div>
+</div>
