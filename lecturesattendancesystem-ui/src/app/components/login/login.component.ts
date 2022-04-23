@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {AuthService} from "../../services/auth/auth.service";
@@ -9,6 +9,7 @@ import {AuthService} from "../../services/auth/auth.service";
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
+
   loginForm: FormGroup;
   userNameField: AbstractControl;
   passwordField: AbstractControl;
@@ -23,6 +24,9 @@ export class LoginComponent {
     private builder: FormBuilder,
     private router: Router
   ) {
+    if (this.authService.isSignedIn()) {
+      this.router.navigateByUrl('/schedule');
+    }
     this.loginForm = this.builder.group({
       username: ['',
         [
