@@ -7,9 +7,13 @@
 }
 
 .footer {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: 100%;
   height: 65px;
   line-height: 60px;
+}
+
+main {
+  margin-bottom: 75px;
 }
