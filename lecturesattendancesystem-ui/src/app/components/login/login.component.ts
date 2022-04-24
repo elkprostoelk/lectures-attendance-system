@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {AuthService} from "../../services/auth/auth.service";
+import {UserModel} from "../../models/userModel";
 
 @Component({
   selector: 'app-login',
@@ -54,7 +55,15 @@ export class LoginComponent {
     this.authService.login(value.username, value.password)
       .subscribe(data => {
         localStorage.setItem('jwt', data.jwt);
-        this.router.navigateByUrl('/');
+        let user: UserModel | null = this.authService.parseJwt();
+        if (user) {
+          if (user.role === 'administrator') {
+            this.router.navigateByUrl('/admin');
+          }
+          else {
+            this.router.navigateByUrl('/schedule');
+          }
+        }
       });
   }
 
