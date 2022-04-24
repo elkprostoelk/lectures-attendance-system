@@ -25,9 +25,9 @@ export class AdminComponent {
     private roleService: RoleService
   ) {
     this.createUserForm = this.builder.group({
-      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
-      firstName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
-      lastName: ['', [Validators.required, Validators.maxLength(100)]],
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+      firstName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
+      lastName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
       password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]],
       roleId: ['', Validators.required]
     });
@@ -73,7 +73,9 @@ export class AdminComponent {
 
   createUser(value: any): void {
     this.userService.createUser(value)
-      .subscribe();
+      .subscribe(() => {
+        window.location.reload();
+      });
   }
 
   deleteUser(userId: number): void {
