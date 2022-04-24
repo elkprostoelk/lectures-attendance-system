@@ -9,12 +9,14 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import { AdminComponent } from './components/admin/admin.component';
 import {AuthGuard} from "./auth-guard/auth.guard";
 import {TokenInterceptor} from "./token.interceptor";
+import { ScheduleComponent } from './components/schedule/schedule.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    AdminComponent
+    AdminComponent,
+    ScheduleComponent
   ],
   imports: [
     BrowserModule,

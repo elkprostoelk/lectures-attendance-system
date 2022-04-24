@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using LecturesAttendanceSystem.Data.Entities;
 using LecturesAttendanceSystem.Data.Interfaces;
 using LecturesAttendanceSystem.Services.Dtos;
@@ -13,13 +15,16 @@ namespace LecturesAttendanceSystem.Services.ServicesImplementations
     {
         private readonly ILessonRepository _lessonRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
         public LessonService(
             ILessonRepository lessonRepository,
-            IUserRepository userRepository)
+            IUserRepository userRepository,
+            IMapper mapper)
         {
             _lessonRepository = lessonRepository;
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         public async Task<ServiceResult> CreateLesson(NewLessonDTO newLessonDto)
@@ -155,6 +160,47 @@ namespace LecturesAttendanceSystem.Services.ServicesImplementations
                 }
             }
 
+            return result;
+        }
+
+        public async Task<ServiceResult> GetSchedule(long? userId, DateTime datePoint)
+        {
+            var startDate = datePoint;
+            var endDate = datePoint;
+            while (startDate.DayOfWeek != DayOfWeek.Monday)
+            {
+                startDate = startDate.AddDays(-1);
+            }
+            while (endDate.DayOfWeek != DayOfWeek.Friday)
+            {
+                endDate = endDate.AddDays(1);
+            }
+            var result = new ServiceResult();
+            var weekLessons = await _lessonRepository.GetLessons(startDate, endDate, userId);
+            result.ResultObject = weekLessons.GroupBy(wl => wl.ScheduledOn.TimeOfDay,
+                (lessonTime, lessons) =>
+                {
+                    var enumerable = lessons.ToList();
+                    return new WorkWeekDTO
+                    {
+                        LessonTime = new DateTime(lessonTime.Ticks),
+                        MondayLesson =
+                            _mapper.Map<CompactLessonDTO>(enumerable.SingleOrDefault(l =>
+                                l.ScheduledOn.DayOfWeek == DayOfWeek.Monday)),
+                        TuesdayLesson =
+                            _mapper.Map<CompactLessonDTO>(enumerable.SingleOrDefault(l =>
+                                l.ScheduledOn.DayOfWeek == DayOfWeek.Tuesday)),
+                        WednesdayLesson =
+                            _mapper.Map<CompactLessonDTO>(enumerable.SingleOrDefault(l =>
+                                l.ScheduledOn.DayOfWeek == DayOfWeek.Wednesday)),
+                        ThursdayLesson =
+                            _mapper.Map<CompactLessonDTO>(enumerable.SingleOrDefault(l =>
+                                l.ScheduledOn.DayOfWeek == DayOfWeek.Thursday)),
+                        FridayLesson =
+                            _mapper.Map<CompactLessonDTO>(enumerable.SingleOrDefault(l =>
+                                l.ScheduledOn.DayOfWeek == DayOfWeek.Friday)),
+                    };
+                });
             return result;
         }
     }

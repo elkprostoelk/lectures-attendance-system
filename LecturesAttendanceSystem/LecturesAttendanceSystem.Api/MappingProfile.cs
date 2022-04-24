@@ -1,3 +1,4 @@
+using System.Linq;
 using AutoMapper;
 using LecturesAttendanceSystem.Api.Models;
 using LecturesAttendanceSystem.Data.Entities;
@@ -15,6 +16,10 @@ namespace LecturesAttendanceSystem.Api
             CreateMap<NewLessonModel, NewLessonDTO>();
             CreateMap<EditLessonModel, EditLessonDTO>();
             CreateMap<User, UserForAdminPanelDTO>();
+            CreateMap<Lesson, CompactLessonDTO>()
+                .ForMember(dto => dto.TeacherName,
+                    opt => opt.MapFrom(
+                        l => l.Participants.SingleOrDefault(p => p.IsTeacher).FullName));
         }
     }
 }

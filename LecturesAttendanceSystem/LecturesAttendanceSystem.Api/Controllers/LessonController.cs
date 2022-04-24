@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using LecturesAttendanceSystem.Api.Models;
@@ -24,6 +25,25 @@ namespace LecturesAttendanceSystem.Api.Controllers
         {
             _mapper = mapper;
             _lessonService = lessonService;
+        }
+
+        [Authorize]
+        [HttpGet("schedule/{userId:long}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetSchedule(long userId)
+        {
+            var result = await _lessonService.GetSchedule(userId, DateTime.Today);
+            if (result.IsSuccessful)
+            {
+                return Ok(result.ResultObject);
+            }
+            foreach (var (key, value) in result.Errors)
+            {
+                ModelState.AddModelError(key, value);
+            }
+            return BadRequest(ModelState);
         }
 
         /// <summary>

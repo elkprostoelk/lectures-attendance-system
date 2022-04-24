@@ -27,6 +27,8 @@ namespace LecturesAttendanceSystem.Data.Entities
         public bool IsTeacher => Role.Name == "teacher";
 
         public bool IsStudent => Role.Name == "student";
+
+        public string FullName => $"{FirstName[0]}. {LastName}";
         
         public ICollection<LessonParticipant> LessonParticipants { get; set; }
     }

@@ -76,5 +76,21 @@ namespace LecturesAttendanceSystem.Data.Repositories
             await transaction.CommitAsync();
             return lessonParticipant.Present;
         }
+
+        public async Task<ICollection<Lesson>> GetLessons(DateTime startDate, DateTime endDate, long? userId = null)
+        {
+            var result = await _context.Lessons
+                .Include(l => l.Participants)
+                .ThenInclude(p => p.Role)
+                .Include(l => l.LessonParticipants)
+                .Where(l => l.ScheduledOn >= startDate
+                     && l.ScheduledOn <= endDate).ToListAsync();
+            if (userId.HasValue)
+            {
+                result = result.Where(l => l.Participants.Any(p => p.Id == userId)).ToList();
+            }
+
+            return result;
+        }
     }
 }

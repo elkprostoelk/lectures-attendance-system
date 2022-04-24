@@ -1,0 +1,98 @@
+<div class="container">
+  <h1 class="text-center mb-3">Schedule</h1>
+  <div class="row mb-3">
+    <h4 class="col fw-bolder text-center">Time</h4>
+    <h4 class="col fw-bolder text-center">Monday</h4>
+    <h4 class="col fw-bolder text-center">Tuesday</h4>
+    <h4 class="col fw-bolder text-center">Wednesday</h4>
+    <h4 class="col fw-bolder text-center">Thursday</h4>
+    <h4 class="col fw-bolder text-center">Friday</h4>
+  </div>
+  <div class="row mb-3" *ngFor="let workWeek of schedule$ | async">
+    <div class="col">
+      <div class="card text-center border-0">
+        <div class="card-body">
+          <p class="card-title">&nbsp;</p>
+          <h6 class="card-subtitle mb-2 text-muted">&nbsp;</h6>
+          <h5 class="card-text">{{workWeek.lessonTime | date: 'shortTime'}}</h5>
+          <p class="card-text">&nbsp;</p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <div *ngIf="workWeek.mondayLesson; else noLesson">
+            <h5 class="card-title">{{workWeek.mondayLesson?.name}}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{workWeek.mondayLesson?.lessonType}}</h6>
+            <p class="card-text">{{workWeek.mondayLesson?.teacherName}}</p>
+            <a href="#" class="card-link">Go to Lesson Page</a>
+          </div>
+          <ng-template #noLesson>
+            <h5 class="card-title">No lesson on this time</h5>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <div *ngIf="workWeek.tuesdayLesson; else noLesson">
+            <h5 class="card-title">{{workWeek.tuesdayLesson?.name}}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{workWeek.tuesdayLesson?.lessonType}}</h6>
+            <p class="card-text">{{workWeek.tuesdayLesson?.teacherName}}</p>
+            <a href="#" class="card-link">Go to Lesson Page</a>
+          </div>
+          <ng-template #noLesson>
+            <h5 class="card-title">No lesson on this time</h5>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <div *ngIf="workWeek.wednesdayLesson; else noLesson">
+            <h5 class="card-title">{{workWeek.wednesdayLesson?.name}}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{workWeek.wednesdayLesson?.lessonType}}</h6>
+            <p class="card-text">{{workWeek.wednesdayLesson?.teacherName}}</p>
+            <a href="#" class="card-link">Go to Lesson Page</a>
+          </div>
+          <ng-template #noLesson>
+            <h5 class="card-title">No lesson on this time</h5>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <div *ngIf="workWeek.thursdayLesson; else noLesson">
+            <h5 class="card-title">{{workWeek.thursdayLesson?.name}}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{workWeek.thursdayLesson?.lessonType}}</h6>
+            <p class="card-text">{{workWeek.thursdayLesson?.teacherName}}</p>
+            <a href="#" class="card-link">Go to Lesson Page</a>
+          </div>
+          <ng-template #noLesson>
+            <h5 class="card-title">No lesson on this time</h5>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <div *ngIf="workWeek.fridayLesson; else noLesson">
+            <h5 class="card-title">{{workWeek.fridayLesson?.name}}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{workWeek.fridayLesson?.lessonType}}</h6>
+            <p class="card-text">{{workWeek.fridayLesson?.teacherName}}</p>
+            <a href="#" class="card-link">Go to Lesson Page</a>
+          </div>
+          <ng-template #noLesson>
+            <h5 class="card-title">No lesson on this time</h5>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
