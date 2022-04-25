@@ -8,6 +8,7 @@ import {UserService} from "../../services/user/user.service";
 import {RoleService} from "../../services/role/role.service";
 import {LessonDTO} from "../../models/lessonDTO";
 import {LessonService} from "../../services/lesson/lesson.service";
+import {ShortUserDTO} from "../../models/shortUserDTO";
 
 @Component({
   selector: 'app-admin',
@@ -20,6 +21,8 @@ export class AdminComponent {
   userDtos?: UserForAdminPanelDto[];
   roles$: Observable<RoleDto[]>;
   lessonDtos$: Observable<LessonDTO[]>;
+  createLessonForm: FormGroup;
+  participants$: Observable<ShortUserDTO[]>;
 
   constructor(
     private readonly authService: AuthService,
@@ -28,12 +31,18 @@ export class AdminComponent {
     private readonly roleService: RoleService,
     private readonly lessonService: LessonService
   ) {
-    this.createUserForm = this.builder.group({
+    this.createUserForm = builder.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
       firstName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
       lastName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
       password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]],
       roleId: ['', Validators.required]
+    });
+    this.createLessonForm = builder.group({
+      name: ['', Validators.required],
+      scheduledOn: ['', Validators.required],
+      lessonType: ['', Validators.required],
+      participantIds: ['', Validators.required]
     });
     this.roles$ = this.roleService.getAllRoles();
     this.userService.getAllUsers()
@@ -43,6 +52,7 @@ export class AdminComponent {
           a.fullName.localeCompare(b.fullName));
       });
     this.lessonDtos$ = lessonService.getLessons();
+    this.participants$ = userService.getUsers();
   }
 
   searchUser(input: HTMLInputElement): void {
@@ -101,5 +111,12 @@ export class AdminComponent {
           window.location.reload();
         });
     }
+  }
+
+  createLesson(value: any) {
+    this.lessonService.createLesson(value)
+      .subscribe(() => {
+        window.location.reload();
+      })
   }
 }

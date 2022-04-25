@@ -32,4 +32,13 @@ export class LessonService {
   deleteLesson(id: number): Observable<void> {
     return this.http.delete<void>(environment.apiPath + this.lessonPath + id);
   }
+
+  createLesson(value: any): Observable<void> {
+    return this.http.post<void>(environment.apiPath + this.lessonPath, {
+      name: value.name,
+      scheduledOn: value.scheduledOn,
+      lessonType: value.lessonType,
+      participantIds: value.participantIds
+    });
+  }
 }

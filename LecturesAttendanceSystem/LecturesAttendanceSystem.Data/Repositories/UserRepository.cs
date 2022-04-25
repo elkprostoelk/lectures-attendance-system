@@ -63,5 +63,14 @@ namespace LecturesAttendanceSystem.Data.Repositories
             await _context.Users
                 .Include(u => u.Role)
                 .ToListAsync();
+
+        public async Task<ICollection<User>> GetStudentsAndTeachersAsync()
+        {
+            var users = await _context.Users
+                .Include(u => u.Role)
+                .ToListAsync();
+            users = users.Where(u => u.IsStudent || u.IsTeacher).ToList();
+            return users;
+        }
     }
 }

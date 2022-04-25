@@ -24,6 +24,10 @@ namespace LecturesAttendanceSystem.Api
                 .ForMember(dto => dto.TeacherName,
                     opt => opt.MapFrom(
                         l => l.Participants.SingleOrDefault(p => p.IsTeacher).FullName));
+            CreateMap<User, ShortUserDTO>()
+                .ForMember(dto => dto.Name,
+                    opt => opt.MapFrom(
+                        u => $"{u.FirstName} {u.LastName}"));
         }
     }
 }

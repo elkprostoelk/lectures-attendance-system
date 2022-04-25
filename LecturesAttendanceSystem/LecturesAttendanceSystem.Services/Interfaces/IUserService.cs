@@ -11,5 +11,6 @@ namespace LecturesAttendanceSystem.Services.Interfaces
         Task<ServiceResult> DeleteUser(long userId);
         Task<ServiceResult> ChangePassword(long userId, ChangePasswordDTO changePasswordDto);
         Task<ServiceResult> GetAllUsers();
+        Task<ServiceResult> GetStudentsAndTeachers();
     }
 }

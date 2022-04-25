@@ -48,6 +48,22 @@ namespace LecturesAttendanceSystem.Api.Controllers
             return BadRequest(ModelState);
         }
 
+        [Authorize(Roles = "administrator, teacher")]
+        [HttpGet("without-admins")]
+        public async Task<IActionResult> GetStudentsAndTeachers()
+        {
+            var result = await _userService.GetStudentsAndTeachers();
+            if (result.IsSuccessful)
+            {
+                return Ok(result.ResultObject);
+            }
+            foreach (var (key, value) in result.Errors)
+            {
+                ModelState.AddModelError(key, value);
+            }
+            return BadRequest(ModelState);
+        }
+
         /// <summary>
         /// Creates a user.
         /// </summary>

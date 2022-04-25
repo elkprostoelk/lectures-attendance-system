@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using LecturesAttendanceSystem.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -30,7 +31,10 @@ namespace LecturesAttendanceSystem.Api
             services.AddDbContext<AttendanceSystemDbContext>(options => 
                 options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
             
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(opt =>
+            {
+                opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
 
             services.ConfigureSwagger();
         }

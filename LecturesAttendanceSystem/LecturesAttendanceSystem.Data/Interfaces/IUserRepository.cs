@@ -14,5 +14,6 @@ namespace LecturesAttendanceSystem.Data.Interfaces
         Task RemoveUser(User user);
         Task<ICollection<User>> GetUsers(ICollection<long> participantIds);
         Task<ICollection<User>> GetAllUsers();
+        Task<ICollection<User>> GetStudentsAndTeachersAsync();
     }
 }

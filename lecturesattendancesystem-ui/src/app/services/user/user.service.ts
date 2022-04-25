@@ -3,6 +3,7 @@ import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {UserForAdminPanelDto} from "../../models/userForAdminPanelDTO";
 import {environment} from "../../../environments/environment";
+import {ShortUserDTO} from "../../models/shortUserDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -31,5 +32,9 @@ export class UserService {
 
   getAllUsers(): Observable<UserForAdminPanelDto[]> {
     return this.http.get<UserForAdminPanelDto[]>(environment.apiPath + this.userPath + 'all');
+  }
+
+  getUsers(): Observable<ShortUserDTO[]> {
+    return this.http.get<ShortUserDTO[]>(environment.apiPath + this.userPath + 'without-admins');
   }
 }

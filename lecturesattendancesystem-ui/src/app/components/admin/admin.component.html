@@ -81,6 +81,47 @@
 
 <h4 class="mb-3">Lessons</h4>
 
+<div class="d-grid gap-2 d-md-flex">
+  <button class="btn btn-sm btn-success mb-3" type="button" data-bs-toggle="modal" data-bs-target="#addLesson">
+    Add
+  </button>
+</div>
+
+<div class="modal fade" id="addLesson" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="addLessonLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content" [formGroup]="createLessonForm" (submit)="createLesson(createLessonForm.value)">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addLessonLabel">Add new lesson</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label for="userName">Lesson name</label>
+        <input class="form-control mb-3" type="text" formControlName="name" id="name">
+        <label for="scheduledOn">Scheduled on</label>
+        <input class="form-control mb-3" type="datetime-local" formControlName="scheduledOn" id="scheduledOn">
+        <label for="lessonType">Lesson type</label>
+        <select class="form-select mb-3" formControlName="lessonType" id="lessonType">
+          <option value disabled selected>Select a lesson type:</option>
+          <option value="1">Lecture</option>
+          <option value="2">Practice</option>
+          <option value="3">Laboratory</option>
+          <option value="4">Seminar</option>
+          <option value="5">Consultation</option>
+        </select>
+        <label for="participantIds">Lesson participants</label>
+        <select class="form-select" multiple formControlName="participantIds" id="participantIds">
+          <option value="{{participant.id}}" *ngFor="let participant of participants$ | async">{{participant.name}}</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button class="btn btn-primary" data-bs-dismiss="modal" [disabled]="createLessonForm.invalid">Create</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <div class="card w-75 mb-3">
   <div class="card-body">
     <div class="card-text" *ngIf="lessonDtos$; else loadingLessons">

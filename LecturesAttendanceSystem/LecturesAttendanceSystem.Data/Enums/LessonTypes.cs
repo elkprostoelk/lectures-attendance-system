@@ -1,6 +1,6 @@
 namespace LecturesAttendanceSystem.Data.Enums
 {
-    public enum LessonTypes
+    public enum LessonTypes : int
     {
         Lecture = 1,
         Practice,

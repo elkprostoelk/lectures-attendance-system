@@ -186,6 +186,14 @@ namespace LecturesAttendanceSystem.Services.ServicesImplementations
             return result;
         }
 
+        public async Task<ServiceResult> GetStudentsAndTeachers()
+        {
+            var result = new ServiceResult();
+            var users = await _userRepository.GetStudentsAndTeachersAsync();
+            result.ResultObject = users.Select(u => _mapper.Map<ShortUserDTO>(u));
+            return result;
+        }
+
         private string HashPassword(User user, string password)
         {
             const int hashSize = 256 / 8;
