@@ -27,7 +27,7 @@ namespace LecturesAttendanceSystem.Api.Controllers
             _lessonService = lessonService;
         }
 
-        [Authorize]
+        [Authorize(Roles = "teacher, student")]
         [HttpGet("schedule/{userId:long}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
