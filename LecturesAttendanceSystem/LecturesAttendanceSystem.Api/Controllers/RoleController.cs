@@ -18,6 +18,13 @@ namespace LecturesAttendanceSystem.Api.Controllers
             _roleService = roleService;
         }
 
+        /// <summary>
+        /// Shows all roles.
+        /// </summary>
+        /// <returns>Roles collection</returns>
+        /// <response code="200">Roles are returned successfully</response>
+        /// <response code="400">If the data is invalid</response>
+        /// <response code="500">Any exception thrown</response>
         [Authorize(Roles = "administrator")]
         [HttpGet("all")]
         public async Task<IActionResult> GetRoles()

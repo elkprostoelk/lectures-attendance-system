@@ -27,6 +27,14 @@ namespace LecturesAttendanceSystem.Api.Controllers
             _lessonService = lessonService;
         }
 
+        /// <summary>
+        /// Shows a schedule for current teacher or student.
+        /// </summary>
+        /// <param name="userId">User ID</param>
+        /// <returns>Collection of lessons and their starting time</returns>
+        /// <response code="200">Schedule is returned successfully</response>
+        /// <response code="400">If the data is invalid or user does nor exist</response>
+        /// <response code="500">Any exception thrown</response>
         [Authorize(Roles = "teacher, student")]
         [HttpGet("schedule/{userId:long}")]
         [ProducesResponseType(StatusCodes.Status200OK)]

@@ -25,11 +25,18 @@ namespace LecturesAttendanceSystem.Api.Controllers
             _userService = userService;
         }
 
+        /// <summary>
+        /// Shows all users for the admin panel..
+        /// </summary>
+        /// <returns>Empty result</returns>
+        /// <response code="200">Users are returned successfully</response>
+        /// <response code="400">If the data is invalid</response>
+        /// <response code="500">Any exception thrown</response>
         [Authorize(Roles = "administrator")]
         [HttpGet("all")]
         public async Task<IActionResult> GetAllUsers()
         {
-            ServiceResult result = await _userService.GetAllUsers();
+            var result = await _userService.GetAllUsers();
             if (result.IsSuccessful)
             {
                 return Ok(result.ResultObject);
