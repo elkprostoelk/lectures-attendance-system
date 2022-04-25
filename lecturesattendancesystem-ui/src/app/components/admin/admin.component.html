@@ -47,7 +47,7 @@
 
 <div class="card w-50 mb-3">
   <div class="card-body">
-    <div class="card-text" *ngIf="userDtos; else loading">
+    <div class="card-text" *ngIf="userDtos; else loadingUsers">
       <div class="row mb-3">
         <div class="col fw-bolder">User Name</div>
         <div class="col fw-bolder">Full Name</div>
@@ -71,7 +71,40 @@
         </div>
       </div>
     </div>
-    <ng-template #loading class="card-text">
+    <ng-template #loadingUsers class="card-text">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<h4 class="mb-3">Lessons</h4>
+
+<div class="card w-75 mb-3">
+  <div class="card-body">
+    <div class="card-text" *ngIf="lessonDtos$; else loadingLessons">
+      <div class="row mb-3">
+        <div class="col fw-bolder">Lesson Name</div>
+        <div class="col fw-bolder">Lesson Type</div>
+        <div class="col fw-bolder">Teacher Name</div>
+        <div class="col fw-bolder">Scheduled On</div>
+        <div class="col fw-bolder">Operations</div>
+      </div>
+      <div class="row mb-3" *ngFor="let lesson of lessonDtos$ | async">
+        <div class="col">{{lesson.name}}</div>
+        <div class="col">{{lesson.lessonType}}</div>
+        <div class="col">{{lesson.teacherName}}</div>
+        <div class="col">{{lesson.scheduledOn | date: 'medium'}}</div>
+        <div class="col">
+          <div class="d-grid gap-2 d-md-flex">
+            <button class="btn btn-sm btn-warning" type="button">Edit</button>
+            <button class="btn btn-sm btn-danger" type="button" (click)="deleteLesson(lesson.id)">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #loadingLessons class="card-text">
       <div class="spinner-border" role="status">
         <span class="visually-hidden">Loading...</span>
       </div>

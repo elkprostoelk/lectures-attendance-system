@@ -92,5 +92,11 @@ namespace LecturesAttendanceSystem.Data.Repositories
 
             return result;
         }
+
+        public async Task<ICollection<Lesson>> GetLessons() =>
+            await _context.Lessons
+                .Include(l => l.Participants)
+                .ThenInclude(p => p.Role)
+                .ToListAsync();
     }
 }

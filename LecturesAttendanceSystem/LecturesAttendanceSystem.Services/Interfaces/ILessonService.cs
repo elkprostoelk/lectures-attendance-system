@@ -13,5 +13,6 @@ namespace LecturesAttendanceSystem.Services.Interfaces
         Task<ServiceResult> CountAbsences(AbsencePeriods duration, long? userId = null);
         Task<ServiceResult> MarkPresence(long lessonId, long userId);
         Task<ServiceResult> GetSchedule(long? userId, DateTime datePoint);
+        Task<ServiceResult> GetLessonsForAdminPanel();
     }
 }

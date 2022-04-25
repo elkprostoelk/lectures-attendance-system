@@ -203,5 +203,13 @@ namespace LecturesAttendanceSystem.Services.ServicesImplementations
                 });
             return result;
         }
+
+        public async Task<ServiceResult> GetLessonsForAdminPanel()
+        {
+            var result = new ServiceResult();
+            var lessons = await _lessonRepository.GetLessons();
+            result.ResultObject = lessons.Select(l => _mapper.Map<LessonDTO>(l));
+            return result;
+        }
     }
 }

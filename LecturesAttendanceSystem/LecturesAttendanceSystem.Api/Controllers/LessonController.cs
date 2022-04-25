@@ -55,6 +55,32 @@ namespace LecturesAttendanceSystem.Api.Controllers
         }
 
         /// <summary>
+        /// Shows a lessons list for the admin panel.
+        /// </summary>
+        /// <returns>Collection of lessons</returns>
+        /// <response code="200">List is returned successfully</response>
+        /// <response code="400">If the data is invalid</response>
+        /// <response code="500">Any exception thrown</response>
+        [Authorize(Roles = "administrator")]
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetLessons()
+        {
+            var result = await _lessonService.GetLessonsForAdminPanel();
+            if (result.IsSuccessful)
+            {
+                return Ok(result.ResultObject);
+            }
+            foreach (var (key, value) in result.Errors)
+            {
+                ModelState.AddModelError(key, value);
+            }
+            return BadRequest(ModelState);
+        }
+
+        /// <summary>
         /// Creates a lesson.
         /// </summary>
         /// <param name="newLessonModel">User creating model</param>

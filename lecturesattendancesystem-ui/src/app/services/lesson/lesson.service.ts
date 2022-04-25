@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {WorkWeekDTO} from "../../models/workWeekDTO";
 import {environment} from "../../../environments/environment";
+import {LessonDTO} from "../../models/lessonDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -22,5 +23,13 @@ export class LessonService {
       path += userId.toString();
     }
     return this.http.get<WorkWeekDTO[]>(path);
+  }
+
+  getLessons(): Observable<LessonDTO[]> {
+    return this.http.get<LessonDTO[]>(environment.apiPath + this.lessonPath);
+  }
+
+  deleteLesson(id: number): Observable<void> {
+    return this.http.delete<void>(environment.apiPath + this.lessonPath + id);
   }
 }

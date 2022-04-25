@@ -6,6 +6,8 @@ import {Observable} from "rxjs";
 import {RoleDto} from "../../models/roleDTO";
 import {UserService} from "../../services/user/user.service";
 import {RoleService} from "../../services/role/role.service";
+import {LessonDTO} from "../../models/lessonDTO";
+import {LessonService} from "../../services/lesson/lesson.service";
 
 @Component({
   selector: 'app-admin',
@@ -17,12 +19,14 @@ export class AdminComponent {
   createUserForm: FormGroup;
   userDtos?: UserForAdminPanelDto[];
   roles$: Observable<RoleDto[]>;
+  lessonDtos$: Observable<LessonDTO[]>;
 
   constructor(
-    private authService: AuthService,
-    private builder: FormBuilder,
-    private userService: UserService,
-    private roleService: RoleService
+    private readonly authService: AuthService,
+    private readonly builder: FormBuilder,
+    private readonly userService: UserService,
+    private readonly roleService: RoleService,
+    private readonly lessonService: LessonService
   ) {
     this.createUserForm = this.builder.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
@@ -38,6 +42,7 @@ export class AdminComponent {
         this.userDtos.sort((a, b) =>
           a.fullName.localeCompare(b.fullName));
       });
+    this.lessonDtos$ = lessonService.getLessons();
   }
 
   searchUser(input: HTMLInputElement): void {
@@ -87,5 +92,14 @@ export class AdminComponent {
 
   isMe(username: string): boolean {
     return this.authService.parseJwt()?.name === username;
+  }
+
+  deleteLesson(id: number) {
+    if (confirm("Are you sure to delete this lesson? It couldn't be reverted!")) {
+      this.lessonService.deleteLesson(id)
+        .subscribe(() => {
+          window.location.reload();
+        });
+    }
   }
 }

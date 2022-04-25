@@ -20,6 +20,10 @@ namespace LecturesAttendanceSystem.Api
                 .ForMember(dto => dto.TeacherName,
                     opt => opt.MapFrom(
                         l => l.Participants.SingleOrDefault(p => p.IsTeacher).FullName));
+            CreateMap<Lesson, LessonDTO>()
+                .ForMember(dto => dto.TeacherName,
+                    opt => opt.MapFrom(
+                        l => l.Participants.SingleOrDefault(p => p.IsTeacher).FullName));
         }
     }
 }
