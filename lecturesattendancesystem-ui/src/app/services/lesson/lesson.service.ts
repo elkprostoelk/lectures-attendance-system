@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import {WorkWeekDTO} from "../../models/workWeekDTO";
 import {environment} from "../../../environments/environment";
 import {LessonDTO} from "../../models/lessonDTO";
+import {LessonWithStudentsDTO} from "../../models/lessonWithStudentsDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -40,5 +41,9 @@ export class LessonService {
       lessonType: value.lessonType,
       participantIds: value.participantIds
     });
+  }
+
+  getLesson(lessonId: number): Observable<LessonWithStudentsDTO> {
+    return this.http.get<LessonWithStudentsDTO>(environment.apiPath + this.lessonPath + lessonId);
   }
 }

@@ -211,5 +211,29 @@ namespace LecturesAttendanceSystem.Services.ServicesImplementations
             result.ResultObject = lessons.Select(l => _mapper.Map<LessonDTO>(l));
             return result;
         }
+
+        public async Task<ServiceResult> GetLesson(long lessonId)
+        {
+            var result = new ServiceResult();
+            var lesson = await _lessonRepository.GetLesson(lessonId);
+            if (lesson is null)
+            {
+                result.IsSuccessful = false;
+                result.Errors.Add("LessonNotFound", "Lesson was not found!");
+            }
+            else
+            {
+                result.ResultObject = new
+                {
+                    lesson.Name,
+                    lesson.LessonType,
+                    lesson.ScheduledOn,
+                    teacher = lesson.Participants.SingleOrDefault(p => p.IsTeacher)?.FullName,
+                    participants = lesson.Participants.Where(p => p.IsStudent)
+                        .Select(s => new {s.Id, name = $"{s.FirstName} {s.LastName}"})
+                };
+            }
+            return result;
+        }
     }
 }

@@ -10,13 +10,15 @@ import { AdminComponent } from './components/admin/admin.component';
 import {AuthGuard} from "./auth-guard/auth.guard";
 import {TokenInterceptor} from "./token.interceptor";
 import { ScheduleComponent } from './components/schedule/schedule.component';
+import { LessonPageComponent } from './components/lesson-page/lesson-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     AdminComponent,
-    ScheduleComponent
+    ScheduleComponent,
+    LessonPageComponent
   ],
   imports: [
     BrowserModule,

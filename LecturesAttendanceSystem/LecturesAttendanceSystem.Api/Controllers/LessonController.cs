@@ -81,6 +81,33 @@ namespace LecturesAttendanceSystem.Api.Controllers
         }
 
         /// <summary>
+        /// Gets a lesson.
+        /// </summary>
+        /// <param name="lessonId">Lesson ID</param>
+        /// <returns>Lesson with participants</returns>
+        /// <response code="200">Lesson is returned successfully</response>
+        /// <response code="400">If the data is invalid or lesson does not exist</response>
+        /// <response code="500">Any exception thrown</response>
+        [Authorize]
+        [HttpGet("{lessonId:long}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetLesson(long lessonId)
+        {
+            var result = await _lessonService.GetLesson(lessonId);
+            if (result.IsSuccessful)
+            {
+                return Ok(result.ResultObject);
+            }
+            foreach (var (key, value) in result.Errors)
+            {
+                ModelState.AddModelError(key, value);
+            }
+            return BadRequest(ModelState);
+        }
+
+        /// <summary>
         /// Creates a lesson.
         /// </summary>
         /// <param name="newLessonModel">User creating model</param>
