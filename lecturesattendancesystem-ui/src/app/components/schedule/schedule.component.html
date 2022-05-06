@@ -27,7 +27,7 @@
             <h5 class="card-title">{{workWeek.mondayLesson?.name}}</h5>
             <h6 class="card-subtitle mb-2 text-muted">{{workWeek.mondayLesson?.lessonType}}</h6>
             <p class="card-text">{{workWeek.mondayLesson?.teacherName}}</p>
-            <a class="card-link" routerLink="/lesson/{{workWeek.mondayLesson?.id}}">Go to Lesson Page</a>
+            <a class="card-link" [routerLink]="['/lesson', workWeek.mondayLesson.id]">Go to Lesson Page</a>
           </div>
           <ng-template #noLesson>
             <h5 class="card-title">No lesson on this time</h5>
@@ -42,7 +42,7 @@
             <h5 class="card-title">{{workWeek.tuesdayLesson?.name}}</h5>
             <h6 class="card-subtitle mb-2 text-muted">{{workWeek.tuesdayLesson?.lessonType}}</h6>
             <p class="card-text">{{workWeek.tuesdayLesson?.teacherName}}</p>
-            <a class="card-link" routerLink="/lesson/{{workWeek.mondayLesson?.id}}">Go to Lesson Page</a>
+            <a class="card-link" [routerLink]="['/lesson', workWeek.tuesdayLesson.id]">Go to Lesson Page</a>
           </div>
           <ng-template #noLesson>
             <h5 class="card-title">No lesson on this time</h5>
@@ -57,7 +57,7 @@
             <h5 class="card-title">{{workWeek.wednesdayLesson?.name}}</h5>
             <h6 class="card-subtitle mb-2 text-muted">{{workWeek.wednesdayLesson?.lessonType}}</h6>
             <p class="card-text">{{workWeek.wednesdayLesson?.teacherName}}</p>
-            <a class="card-link" routerLink="/lesson/{{workWeek.mondayLesson?.id}}">Go to Lesson Page</a>
+            <a class="card-link" [routerLink]="['/lesson', workWeek.wednesdayLesson.id]">Go to Lesson Page</a>
           </div>
           <ng-template #noLesson>
             <h5 class="card-title">No lesson on this time</h5>
@@ -72,7 +72,7 @@
             <h5 class="card-title">{{workWeek.thursdayLesson?.name}}</h5>
             <h6 class="card-subtitle mb-2 text-muted">{{workWeek.thursdayLesson?.lessonType}}</h6>
             <p class="card-text">{{workWeek.thursdayLesson?.teacherName}}</p>
-            <a class="card-link" routerLink="/lesson/{{workWeek.mondayLesson?.id}}">Go to Lesson Page</a>
+            <a class="card-link" [routerLink]="['/lesson', workWeek.thursdayLesson.id]">Go to Lesson Page</a>
           </div>
           <ng-template #noLesson>
             <h5 class="card-title">No lesson on this time</h5>
@@ -87,7 +87,7 @@
             <h5 class="card-title">{{workWeek.fridayLesson?.name}}</h5>
             <h6 class="card-subtitle mb-2 text-muted">{{workWeek.fridayLesson?.lessonType}}</h6>
             <p class="card-text">{{workWeek.fridayLesson?.teacherName}}</p>
-            <a class="card-link" routerLink="/lesson/{{workWeek.mondayLesson?.id}}">Go to Lesson Page</a>
+            <a class="card-link" [routerLink]="['/lesson', workWeek.fridayLesson.id]">Go to Lesson Page</a>
           </div>
           <ng-template #noLesson>
             <h5 class="card-title">No lesson on this time</h5>
