@@ -165,8 +165,17 @@ namespace LecturesAttendanceSystem.Services.ServicesImplementations
 
         public async Task<ServiceResult> GetSchedule(long? userId, DateTime datePoint)
         {
+            if (datePoint.DayOfWeek is DayOfWeek.Saturday)
+            {
+                datePoint = datePoint.AddDays(2);
+            }
+            if (datePoint.DayOfWeek is DayOfWeek.Sunday)
+            {
+                datePoint = datePoint.AddDays(1);
+            }
             var startDate = datePoint;
             var endDate = datePoint;
+            endDate = endDate.Add(TimeSpan.Parse("23:59:59.9999999"));
             while (startDate.DayOfWeek != DayOfWeek.Monday)
             {
                 startDate = startDate.AddDays(-1);
