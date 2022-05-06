@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {LessonService} from "../../services/lesson/lesson.service";
 import {AuthService} from "../../services/auth/auth.service";
 import {UserModel} from "../../models/userModel";
@@ -14,12 +14,14 @@ import {Router} from "@angular/router";
 export class ScheduleComponent {
 
   schedule$: Observable<WorkWeekDTO[]>;
+  today: Date;
 
   constructor(
     private readonly lessonService: LessonService,
     private readonly authService: AuthService,
     private readonly router: Router
   ) {
+    this.today = new Date();
     let user: UserModel | null = authService.parseJwt();
     let userId: number | undefined = undefined;
     if (user && user.role !== 'administrator') {
