@@ -163,27 +163,9 @@ namespace LecturesAttendanceSystem.Services.ServicesImplementations
             return result;
         }
 
-        public async Task<ServiceResult> GetSchedule(long? userId, DateTime datePoint)
+        public async Task<ServiceResult> GetSchedule(long? userId, DateTime startDate, DateTime endDate)
         {
-            if (datePoint.DayOfWeek is DayOfWeek.Saturday)
-            {
-                datePoint = datePoint.AddDays(2);
-            }
-            if (datePoint.DayOfWeek is DayOfWeek.Sunday)
-            {
-                datePoint = datePoint.AddDays(1);
-            }
-            var startDate = datePoint;
-            var endDate = datePoint;
             endDate = endDate.Add(TimeSpan.Parse("23:59:59.9999999"));
-            while (startDate.DayOfWeek != DayOfWeek.Monday)
-            {
-                startDate = startDate.AddDays(-1);
-            }
-            while (endDate.DayOfWeek != DayOfWeek.Friday)
-            {
-                endDate = endDate.AddDays(1);
-            }
             var result = new ServiceResult();
             var weekLessons = await _lessonRepository.GetLessons(startDate, endDate, userId);
             result.ResultObject = weekLessons.GroupBy(wl => wl.ScheduledOn.TimeOfDay,

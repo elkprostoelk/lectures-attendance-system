@@ -1,6 +1,10 @@
 <div class="container">
   <h1 class="text-center mb-3">Schedule</h1>
   <h4 class="fw-bolder text-center mb-3">Today is {{today | date: 'fullDate'}}</h4>
+  <form class="text-center mb-3" [formGroup]="scheduleDatesForm" (submit)="getSchedule(scheduleDatesForm.value)">
+    Show from: <input class="form-control-sm" type="date" formControlName="startDate"> to: <input class="form-control-sm" type="date" formControlName="endDate">
+    <button class="btn btn-sm btn-primary m-3">Show</button>
+  </form>
   <div class="row mb-3">
     <h4 class="col fw-bolder text-center">Time</h4>
     <h4 class="col fw-bolder text-center">Monday</h4>

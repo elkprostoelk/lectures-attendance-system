@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {WorkWeekDTO} from "../../models/workWeekDTO";
 import {environment} from "../../../environments/environment";
@@ -18,8 +18,8 @@ export class LessonService {
     this.lessonPath = 'lesson/';
   }
 
-  getSchedule(userId: number | undefined): Observable<WorkWeekDTO[]> {
-    let path: string = environment.apiPath + this.lessonPath + 'schedule/';
+  getSchedule(userId: number | undefined, startDate: Date, endDate: Date): Observable<WorkWeekDTO[]> {
+    let path: string = `${environment.apiPath}${this.lessonPath}schedule/${startDate}/${endDate}/`;
     if (userId !== undefined) {
       path += userId.toString();
     }

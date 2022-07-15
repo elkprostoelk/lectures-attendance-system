@@ -31,18 +31,20 @@ namespace LecturesAttendanceSystem.Api.Controllers
         /// Shows a schedule for current teacher or student.
         /// </summary>
         /// <param name="userId">User ID</param>
+        /// <param name="startDate">Start Date</param>
+        /// <param name="endDate">End Date</param>
         /// <returns>Collection of lessons and their starting time</returns>
         /// <response code="200">Schedule is returned successfully</response>
         /// <response code="400">If the data is invalid or user does nor exist</response>
         /// <response code="500">Any exception thrown</response>
         [Authorize(Roles = "teacher, student")]
-        [HttpGet("schedule/{userId:long}")]
+        [HttpGet("schedule/{startDate:datetime}/{endDate:datetime}/{userId:long}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetSchedule(long userId)
+        public async Task<IActionResult> GetSchedule(long userId, DateTime startDate, DateTime endDate)
         {
-            var result = await _lessonService.GetSchedule(userId, DateTime.Today);
+            var result = await _lessonService.GetSchedule(userId, startDate, endDate);
             if (result.IsSuccessful)
             {
                 return Ok(result.ResultObject);

@@ -7,14 +7,17 @@
 <h4>Students:</h4>
 
 <div class="card w-50 mb-3">
-  <div class="card-body">
+  <form class="card-body">
     <div class="row mb-3">
       <div class="col fw-bolder">Student Name</div>
       <div class="col fw-bolder">Present</div>
     </div>
     <div class="row mb-3" *ngFor="let student of (lesson$ | async)?.participants">
       <div class="col">{{student.name}}</div>
-      <div class="col">n/a</div>
+      <div class="col">
+        <input class="form-check-input" type="checkbox">
+        <input type="hidden" value="{{student.id}}">
+      </div>
     </div>
-  </div>
+  </form>
 </div>
